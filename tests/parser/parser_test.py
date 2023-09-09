@@ -9,12 +9,10 @@ sys.path.insert(1, "../")
 from parser import Parser
 import test_utils
 
-
 def parser_tester():
-    test_utils.printYellow("Test 1: language_example")
+    test_utils.printYellow("Test 1: language_example.txt")
     
     TESTER_PROGRAM_PATH = SRC_RELATIVE_PATH + "../programs/examples/language_example.txt"
-    
     expected_variables_results = {'i', 'j', 'n'}
     
     try:

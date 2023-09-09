@@ -12,7 +12,6 @@ class Parser:
             lines_results[line_number] = result[0]
         return lines_results
     
-    
     def __init__(self, program_path = INVALID_PROGRAM_PATH):
         assert program_path != INVALID_PROGRAM_PATH, f"Invalid path to program file: {program_path}."
         
@@ -28,16 +27,6 @@ class Parser:
             self.variables = self.parseVariables(variables_line)
             self.program = Parser.splitLabels(program)
         
-
-
-    
     def parseVariables(self, variables_line):
         variables = set(variables_line.strip().split(" "))
         return variables
-
-
-
-
-
-
-

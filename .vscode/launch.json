@@ -12,6 +12,15 @@
             "program": "parser_test.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Parity Domain Test",
+            "cwd": "C:/Users/Shahak/Desktop/project/tests/domains/",
+            "type": "python",
+            "request": "launch",
+            "program": "domains_tests.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
