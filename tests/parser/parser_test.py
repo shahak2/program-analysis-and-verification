@@ -1,10 +1,12 @@
-
-SRC_RELATIVE_PATH = "../../src/"
-PARSER_RELATIVE_PATH = SRC_RELATIVE_PATH + 'parser/'
-
 import sys
+
+SRC_RELATIVE_PATH = "src/"
+PARSER_RELATIVE_PATH = SRC_RELATIVE_PATH + 'parser/'
+TESTS_RELATIVE_PATH = "tests/"
+
+
 sys.path.insert(1, PARSER_RELATIVE_PATH)
-sys.path.insert(1, "../")
+sys.path.insert(1, TESTS_RELATIVE_PATH)
 
 from parser import Parser
 import test_utils

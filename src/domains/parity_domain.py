@@ -1,64 +1,115 @@
+import sys
+
+
+
+SRC_RELATIVE_PATH = "src/"
+TABLE_RELATIVE_PATH = SRC_RELATIVE_PATH + "table/"
+
+sys.path.insert(1, TABLE_RELATIVE_PATH)
+
 import base_domain
+from table import Table
+
+ODD = "ODD"
+EVEN = "EVEN"
+BOTTOM = "BOTTOM"
+TOP = "TOP"
 
 class ParityDomain(base_domain.BaseDomain):        
     
-    CONTAINS_TABLE = {
-        "ODD": ["BOTTOM", "ODD"],
-        "EVEN": ["BOTTOM", "EVEN"],
-        "TOP": ["BOTTOM", "ODD", "EVEN"],
-        "BOTTOM": []
-    }
-    
-    # MEET_TABLE = {
-    #     ("ODD", "EVEN"): [],
-    #     ("EVEN", "ODD"): [],
-    #     "TOP": [],
-    #     "BOTTOM": []
-    # }
-    
-    # JOIN_TABLE = {
-    #     "ODD": [],
-    #     "EVEN": [],
-    #     "TOP": [],
-    #     "BOTTOM": []
-    # }
         
-    def parity_contains(item1, item2):
+    def parity_contains(self, item1, item2):
         ''' Returns true if item1 <= item2. In words, item2 contains item1. '''
         
-        super(ParityDomain, ParityDomain).validate_elements([item1, item2])
-        return item1 in ParityDomain.CONTAINS_TABLE[item2]
+        self.validate_elements([item1, item2])
+        return item1 in self.contains_table[item2]
         
         
+    def parity_join(self, item1, item2):
+        ''' Returns the result for item1 JOIN item2'''
         
+        self.validate_elements([item1, item2])
+        # TODO: Implement
     
-    def parity_join(item1, item2):
-       super(ParityDomain, ParityDomain).validate_elements([item1, item2])
+    def meet(self, item1, item2):
+        ''' Returns the result for item1 MEET item2'''
+        
+        self.validate_elements([item1, item2])
+        return self.meet_table.get_value(item1, item2)
     
-    def parity_meet(item1, item2):
-        super(ParityDomain, ParityDomain).validate_elements([item1, item2])
+    
+    def get_contains_table():
+        return {
+            "ODD": ["BOTTOM", "ODD"],
+            "EVEN": ["BOTTOM", "EVEN"],
+            "TOP": ["BOTTOM", "ODD", "EVEN"],
+            "BOTTOM": []
+        }
+    
+    def get_meet_table(domain):
+        meet_table = Table(list(domain))
+        MEET_RELATIONS = [
+            (BOTTOM,  TOP,       BOTTOM), 
+            (BOTTOM,  EVEN,      BOTTOM), 
+            (BOTTOM,  ODD,       BOTTOM),
+            (BOTTOM,  BOTTOM,    BOTTOM), 
+            (TOP,     EVEN,      EVEN  ), 
+            (TOP,     ODD,       ODD   ), 
+            (TOP,     TOP,       TOP   ),
+            (ODD,     EVEN,      BOTTOM),
+            (ODD,     ODD,       ODD   ),
+            (EVEN,    EVEN,      EVEN  )
+        ]
+        
+        for relation in MEET_RELATIONS:
+            meet_table.set_relation(relation[0], relation[1], relation[2])
+        return meet_table
+        
         
     
     def __init__(self):
-        D = {"TOP", "EVEN", "ODD", "BOTTOM"}
+        DOMAIN = {"TOP", "EVEN", "ODD", "BOTTOM"}
         
-        super().__init__(
-            D, 
-            ParityDomain.parity_contains, 
-            ParityDomain.parity_join, 
-            ParityDomain.parity_meet)
+        self.contains_table = ParityDomain.get_contains_table()
+        self.meet_table = ParityDomain.get_meet_table(DOMAIN)
+        
+        super().__init__(DOMAIN)
+        
+        
+        
+        
+        
+        
 
 
 
-# p = ParityDomain()
-# ParityDomain.meet("EVEN", "EVEN")
-# print(ParityDomain.domain)
 
 
 
 
 
 
+
+# # Example usage:
+# elements = ["A", "B", "C", "D"]
+# my_table = Table(elements)
+
+
+
+# # Add relations for element A
+# my_table.set_relation("A", "B", 42)
+# my_table.set_relation("A", "C", 55)
+# my_table.set_relation("A", "D", 12)
+
+# # Add relations for element B
+# my_table.set_relation("B", "C", 30)
+# my_table.set_relation("B", "D", 18)
+
+# # Add relations for element C
+# my_table.set_relation("C", "D", 25)
+
+
+# my_table.print_table()
 
 
 
