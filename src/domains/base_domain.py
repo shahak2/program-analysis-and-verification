@@ -29,9 +29,7 @@ class BaseDomain:
     def join(self, item1, item2):
         raise NameError('Join method not implemented')
     
-    def contains(self, item1, item2):
-        ''' Returns of item1 <= item2. In words, item2 contains item1. '''
-        
+    def contains(self, item1, item2):       
         raise NameError('Contains method not implemented')
     
     def validate_elements(self, items):

@@ -6,19 +6,19 @@
     "configurations": [
         {
             "name": "Parser Test",
-            "cwd": "C:/Users/Shahak/Desktop/project/tests/parser/",
+            "cwd": "${workspaceFolder}",
             "type": "python",
             "request": "launch",
-            "program": "parser_test.py",
+            "program": "tests/parser/parser_test.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
         {
             "name": "Parity Domain Test",
-            "cwd": "C:/Users/Shahak/Desktop/project/tests/domains/",
+            "cwd": "${workspaceFolder}",
             "type": "python",
             "request": "launch",
-            "program": "domains_tests.py",
+            "program": "tests/domains/domains_tests.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
