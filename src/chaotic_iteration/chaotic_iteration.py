@@ -38,7 +38,10 @@ def chaotic_iteration(abstract_domain,
                                                       transformer)
         
         if new_values_vector != current_values_vector:
-            dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
+            dependent_cfg_nodes_labes = filter(
+                lambda node_label: not program_cfg.isExitNode(node_label),
+                current_cfg_node.get_out_labels())
+            
             working_list.insert_elements(dependent_cfg_nodes_labes)
         
         
