@@ -57,7 +57,7 @@ class ControlFlowGraph:
         new_node = CfgNode(node_label,
                            statement,
                            values_vector,
-                           [out_labels])
+                           out_labels)
         self.cfg_nodes[node_label] = new_node
     
     def add_assume_cfg_node(self, 
@@ -112,5 +112,5 @@ class ControlFlowGraph:
             self.add_cfg_node(node_label, 
                               statement, 
                               initiated_values_vector,
-                              next_label)
+                              [next_label])
             
