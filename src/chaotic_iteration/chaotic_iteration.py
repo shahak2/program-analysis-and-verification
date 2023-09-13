@@ -27,7 +27,7 @@ def chaotic_iteration(abstract_domain,
             joined_vector = \
                 abstract_domain.vectors_join_from_list(all_incoming_vectors)
                 
-        new_values_vector = abstract_domain.transform(joined_vector, 
+        new_values_vector = abstract_domain.transform(joined_vector,
                                                       transformer)
         
         if new_values_vector != current_values_vector:
