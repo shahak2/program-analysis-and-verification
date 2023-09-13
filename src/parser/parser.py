@@ -3,14 +3,13 @@ import re
 INVALID_PROGRAM_PATH = ""
 
 class Parser:
-    
-    def splitLabels(program_lines):
-        lines_results = dict()
-        for line_number, line in enumerate(program_lines):
-            regex_pattern = r'(L\d+)\s+(.*?)\s+(L\d+)'
-            result = re.findall(regex_pattern, line)
-            lines_results[line_number] = result[0]
-        return lines_results
+    """
+        Parser:
+            Gets a path to a program text file.
+            Sets the fields:
+                variables: The set of variables in the program
+                program:   A list of tuples: (current label, statement, following label) 
+    """
     
     def __init__(self, program_path = INVALID_PROGRAM_PATH):
         assert program_path != INVALID_PROGRAM_PATH, f"Invalid path to program file: {program_path}."
@@ -26,7 +25,15 @@ class Parser:
             
             self.variables = self.parseVariables(variables_line)
             self.program = Parser.splitLabels(program)
-        
+    
+    def splitLabels(program_lines):
+        lines_results = dict()
+        for line_number, line in enumerate(program_lines):
+            regex_pattern = r'(L\d+)\s+(.*?)\s+(L\d+)'
+            result = re.findall(regex_pattern, line)
+            lines_results[line_number] = result[0]
+        return lines_results
+    
     def parseVariables(self, variables_line):
         variables = set(variables_line.strip().split(" "))
         return variables

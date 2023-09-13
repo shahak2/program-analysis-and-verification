@@ -21,6 +21,15 @@
             "program": "tests/domains/domains_tests.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Run Static Analysis",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "src/static_analysis/static_analysis.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

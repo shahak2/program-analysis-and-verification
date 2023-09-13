@@ -21,7 +21,7 @@ class ParityDomain(base_domain.BaseDomain):
             (TOP,     EVEN,      TOP    ), 
             (TOP,     ODD,       TOP    ), 
             (TOP,     TOP,       TOP    ),
-            (TOP,     BOTTOM,       TOP ), 
+            (TOP,     BOTTOM,    TOP    ), 
             (BOTTOM,  EVEN,      EVEN   ), 
             (BOTTOM,  ODD,       ODD    ),
             (BOTTOM,  BOTTOM,    BOTTOM ), 
