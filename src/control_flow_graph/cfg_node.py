@@ -27,3 +27,6 @@ class CfgNode():
     
     def get_out_labels(self):
         return self.out_labels.copy()
+    
+    def is_entry_node(self):
+        return len(self.in_labels) == 0

@@ -72,12 +72,12 @@ class ControlFlowGraph:
         for cfg_node in self.cfg_nodes.values():
             out_nodes_labels_set = cfg_node.get_out_labels()
             for out_node_label in out_nodes_labels_set:
-                if self.isExitNode(out_node_label):
+                if self.is_exit_node(out_node_label):
                     continue
                 cfg_out_node = self.get_cfg_node_by_label(out_node_label)
                 cfg_out_node.add_in_label(cfg_node.node_label)
                 
-    def isExitNode(self, node_label):
+    def is_exit_node(self, node_label):
         return node_label in self.exit_labels_set
     
     def init_cfg_nodes(self, 

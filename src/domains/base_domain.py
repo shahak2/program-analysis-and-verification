@@ -48,7 +48,22 @@ class BaseDomain:
                 result_vector[i] = self.join(values_vector1[i],
                                             values_vector2[i])
             return result_vector
+    
+    def vectors_join_from_list(self, 
+                               vectors_list):
+            number_of_vectors = len(vectors_list)
+            result_vector = vectors_list[0].copy()
+            vectors_length = len(result_vector)
+            
+            for vector_number in range(1, number_of_vectors):
+                
+                result_vector = self.vector_join(result_vector, 
+                                                 vectors_list[vector_number])
+            
+            return result_vector
         
+    
+    
     def transform(self, 
                   statement, 
                   values_vector):

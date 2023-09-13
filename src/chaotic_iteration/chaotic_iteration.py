@@ -18,14 +18,15 @@ def chaotic_iteration(abstract_domain,
         current_values_vector = current_cfg_node.get_values_vector()
         transformer = current_cfg_node.get_transformer()
         
-        all_incoming_vectors = \
-            program_cfg.get_incoming_nodes_values_vectors_by_node_label(
-                cfg_node_label)
-        
-        joined_vector = \
-            abstract_domain.join_vector(transformer,
-                                        all_incoming_vectors)
-        
+        if current_cfg_node.is_entry_node():
+            joined_vector = current_values_vector
+        else:
+            all_incoming_vectors = \
+                program_cfg.get_incoming_nodes_values_vectors_by_node_label(
+                    cfg_node_label)
+            joined_vector = \
+                abstract_domain.vectors_join_from_list(all_incoming_vectors)
+                
         new_values_vector = abstract_domain.transform(joined_vector, 
                                                       transformer)
         
