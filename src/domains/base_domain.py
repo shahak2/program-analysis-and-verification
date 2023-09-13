@@ -1,7 +1,5 @@
 class BaseDomain:
-    
     """  
-    
     Abstract Domain Representation 
     
         D - domain
@@ -12,7 +10,6 @@ class BaseDomain:
         bottom
     
     """
-    
     def __init__(self, 
                  D, 
                  TOP = "TOP", 
@@ -21,7 +18,6 @@ class BaseDomain:
         self.domain = D
         self.TOP = TOP
         self.BOTTOM = BOTTOM
-        
         
     def meet(self, item1, item2):
         raise NameError('Meet method not implemented')
@@ -40,23 +36,24 @@ class BaseDomain:
         if len(invalid_items) > 0:
             raise NameError(f"Elements {invalid_items} not in domain")
 
-
-    
+    def vector_join(self, 
+                    values_vector1,
+                    values_vector2):
+            assert len(values_vector1) == len(values_vector1), \
+                "Cannot perform join on vectors with different length!"
+            
+            vector_length = len(values_vector1)
+            result_vector = [None for i in range(0, vector_length)]
+            for i in range(0, vector_length):
+                result_vector[i] = self.join(values_vector1[i],
+                                            values_vector2[i])
+            return result_vector
+        
     def transform(self, 
-                 statement, 
-                 values_vector):
-        pass
-    
-    def join_vector(self, 
-                    statement, 
-                    values_vector):
+                  statement, 
+                  values_vector):
         pass
     
     
     
     
-
-
-
-
-

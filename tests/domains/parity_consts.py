@@ -1,9 +1,7 @@
-
 TOP = "TOP"
 BOTTOM = "BOTTOM"
 ODD = "ODD"
 EVEN = "EVEN"
-
 
 CONTAINS_RELATIONS = [
     (BOTTOM,    TOP,    True),
@@ -18,7 +16,6 @@ CONTAINS_INVALID_RELATIONS = [
     (EVEN,      BOTTOM, False),
     (TOP,       EVEN,   False)
 ]
-
 
 MEET_RELATIONS = [
     (BOTTOM,  TOP,       BOTTOM), 
@@ -59,9 +56,12 @@ JOIN_INVALID_RELATIONS = [
     (TOP,     BOTTOM,    BOTTOM )
 ]
 
-
-
-
+# [(vector1, vector2, expected_result), ...]
+VECTOR_JOIN_TESTS = [
+    ([TOP, TOP, TOP],       [TOP, TOP, TOP],        [TOP, TOP, TOP] ),
+    ([TOP, TOP, TOP],       [BOTTOM, EVEN, ODD],    [TOP, TOP, TOP] ),
+    ([EVEN, ODD, BOTTOM],   [BOTTOM, EVEN, ODD],    [EVEN, TOP, ODD])
+]
 
 
 

@@ -1,11 +1,9 @@
 import sys
 from enum import StrEnum
 
-
 SRC_RELATIVE_PATH = "src/"
 PARITY_DOMAIN_PATH = SRC_RELATIVE_PATH + 'domains/'
 TESTS_RELATIVE_PATH = "tests/"
-
 
 sys.path.insert(1, PARITY_DOMAIN_PATH)
 sys.path.insert(1, TESTS_RELATIVE_PATH)
@@ -14,13 +12,11 @@ import parity_consts
 from parity_domain import ParityDomain
 import test_utils
 
-
 class OPERATIONS(StrEnum):
     meet = "meet"
     join = "join"
     contains = "contains"
     
-
 def test_contains_relations(domain, operation, relations):
     test_utils.printYellow(f"Operation {operation} Valid Test")
     for relation in relations:
@@ -43,7 +39,15 @@ def test_invalid_relations(domain, operation, relations, is_symmetric_relation =
         if is_symmetric_relation:
             assert getattr(domain, operation)(relation[1], relation[0]) != relation[2], "Invalid result"
 
-         
+def test_vector_join(domain, 
+                     test_vectors):
+    
+    for test_vector in test_vectors:
+        assert domain.vector_join(
+            test_vector[0], 
+            test_vector[1]) == test_vector[2], \
+                f"Expected {test_vector[0]} (JOIN) {test_vector[1]} == {test_vector[2]}!"
+        
 def parity_domain_tester():
     test_utils.printYellow("Parity Domain Test")
     try:
@@ -69,6 +73,10 @@ def parity_domain_tester():
         test_invalid_relations(parity_d, 
                                OPERATIONS.join, 
                                parity_consts.JOIN_INVALID_RELATIONS)
+        
+        # VECTOR JOIN
+        test_vector_join(parity_d,
+                         parity_consts.VECTOR_JOIN_TESTS)
     except Exception as e:
         test_utils.printError(f'{e}')
         return
