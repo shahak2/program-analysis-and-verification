@@ -1,5 +1,6 @@
 from working_list import WorkingList
 
+# TODO: Add stopping for false assertion
 
 def chaotic_iteration(abstract_domain,
                       program_cfg):
@@ -16,7 +17,7 @@ def chaotic_iteration(abstract_domain,
             cfg_node_label)
         
         current_values_vector = current_cfg_node.get_values_vector()
-        transformer = current_cfg_node.get_transformer()
+        statement = current_cfg_node.get_statement()
         
         if current_cfg_node.is_entry_node():
             joined_vector = current_values_vector
@@ -28,7 +29,8 @@ def chaotic_iteration(abstract_domain,
                 abstract_domain.vectors_join_from_list(all_incoming_vectors)
                 
         new_values_vector = abstract_domain.transform(joined_vector,
-                                                      transformer)
+                                                      statement,
+                                                      program_cfg.variable_to_index_mapping)
         
         if new_values_vector != current_values_vector:
             dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()

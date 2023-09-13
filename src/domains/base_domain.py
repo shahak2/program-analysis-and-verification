@@ -62,12 +62,11 @@ class BaseDomain:
             
             return result_vector
         
-    
-    
     def transform(self, 
                   statement, 
-                  values_vector):
-        pass
+                  values_vector,
+                  variable_to_index_mapping):
+        raise NameError('transform method not implemented')
     
     
     

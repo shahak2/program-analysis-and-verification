@@ -22,7 +22,7 @@ class CfgNode():
     def get_values_vector(self):
         return self.values_vector.copy()
     
-    def get_transformer(self):
+    def get_statement(self):
         return self.statement
     
     def get_out_labels(self):
