@@ -21,7 +21,7 @@ class ControlFlowGraph:
             - program lines:        A list of tuples: (node label, statement, following label)
             - variables_mappings:   A dictonary mapping { variable_name: variable_number }
             - number_of_variables
-            - cfg_nodes:            A set of CfgNodes 
+            - cfg_nodes:            A dictonary of CfgNodes
             - domain_bottom         The value given for all nodes but the entry node
     """
     
@@ -36,6 +36,7 @@ class ControlFlowGraph:
         self.number_of_variables = len(variables_set)
         self.domain_bottom = domain_bottom
         self.init_cfg_nodes(default_entry_node_value)
+        self.build_graph()
         
     def init_cfg_nodes(self, 
                        default_entry_node_value):
@@ -71,19 +72,19 @@ class ControlFlowGraph:
                 node_label + SECOND_CONDITION_LABEL_SUFFIX
             ]
             self.add_simple_cfg_node(node_label,
-                                ASSUME_STATEMENT,
-                                values_vector,
-                                condition_node_out_labels)
+                                     ASSUME_STATEMENT,
+                                     values_vector,
+                                     condition_node_out_labels)
             
             self.add_simple_cfg_node(node_label + FIRST_CONDITION_LABEL_SUFFIX,
-                                statement,
-                                values_vector,
-                                out_labels)
+                                     statement,
+                                     values_vector,
+                                     out_labels)
         else:
             self.add_simple_cfg_node(node_label + SECOND_CONDITION_LABEL_SUFFIX,
-                                statement,
-                                values_vector,
-                                out_labels)
+                                     statement,
+                                     values_vector,
+                                     out_labels)
         
     def add_cfg_node(self, 
                      node_label, 
@@ -101,16 +102,32 @@ class ControlFlowGraph:
                                     values_vector, 
                                     out_labels)
 
-    def get_values_vector(self):
+    def get_init_values_vector(self):
         return [self.domain_bottom] * self.number_of_variables
     
     def build_graph(self):
         for line_number, line_info in self.program_lines.items():
             node_label, statement, next_label = line_info
 
-            initiated_values_vector = self.get_values_vector()
+            initiated_values_vector = self.get_init_values_vector()
             self.add_cfg_node(node_label, 
                               statement, 
                               initiated_values_vector,
                               [next_label])
-            
+    
+    def get_cfg_node_by_label(self, 
+                              node_label):
+        if node_label not in self.cfg_nodes:
+            # raise NameError(f'Label {node_label} does not exist in the CFG!')
+            return
+        
+        return self.cfg_nodes[node_label]
+    
+    
+    def get_incoming_cfg_nodes_by_node(self, 
+                                       cfg_node: CfgNode):
+        in_cfg_nodes = []
+        for incoming_node_label in cfg_node.in_labels:
+            in_cfg_nodes.append(
+                self.get_cfg_node_by_label(incoming_node_label))
+        return in_cfg_nodes

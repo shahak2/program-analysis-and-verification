@@ -10,3 +10,20 @@ class CfgNode():
         self.out_labels = out_labels
         self.values_vector = values_vector.copy()
         self.out_labels = out_labels
+        self.in_labels = {}
+        
+    def add_in_label(self, label):
+        self.in_labels.add(label)
+        
+    def update_values_vector(self,
+                             new_vector):
+        self.values_vector = new_vector
+        
+    def get_values_vector(self):
+        return self.values_vector.copy()
+    
+    def get_transformer(self):
+        return self.statement
+    
+    def get_out_labels(self):
+        return self.out_labels

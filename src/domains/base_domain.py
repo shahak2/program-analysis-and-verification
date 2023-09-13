@@ -41,6 +41,20 @@ class BaseDomain:
             raise NameError(f"Elements {invalid_items} not in domain")
 
 
+    
+    def transform(self, 
+                 statement, 
+                 values_vector):
+        pass
+    
+    def join_vector(self, 
+                    statement, 
+                    values_vector):
+        pass
+    
+    
+    
+    
 
 
 
