@@ -34,9 +34,7 @@ def static_analysis(program_path,
     CI.chaotic_iteration(abstract_domain,
                          program_cfg)
     
-    
     test_utils.printSuccess("Analysis finished")
-
 
 
 def get_args():
@@ -48,10 +46,15 @@ def get_domain():
     # TODO: Implement from args
     return ParityDomain()
 
-if __name__ == "__main__":
-    
+
+def main():
     program_path = get_args()
     p_domain = get_domain()
     
     static_analysis(program_path, 
                     p_domain)
+
+
+if __name__ == "__main__":
+    main()
+    

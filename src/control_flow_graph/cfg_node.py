@@ -3,14 +3,14 @@ class CfgNode():
                  node_label,
                  statement,
                  values_vector,
-                 out_labels = []):
+                 out_labels = set()):
         
         self.node_label = node_label
         self.statement = statement
         self.out_labels = out_labels
         self.values_vector = values_vector.copy()
         self.out_labels = out_labels
-        self.in_labels = {}
+        self.in_labels = set()
         
     def add_in_label(self, label):
         self.in_labels.add(label)
@@ -26,4 +26,4 @@ class CfgNode():
         return self.statement
     
     def get_out_labels(self):
-        return self.out_labels
+        return self.out_labels.copy()

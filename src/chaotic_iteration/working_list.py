@@ -1,8 +1,9 @@
 from random import sample
 
 class WorkingList():
-    def __init__(self, elements):
+    def __init__(self, elements, ignore_elements = set()):
         self.elements = set(elements)
+        self.ignore_elements = ignore_elements
         
     def pop_random_element(self):
         if self.elements:
@@ -14,6 +15,8 @@ class WorkingList():
         return len(self.elements) == 0
     
     def insert_element(self, element):
+        if element in self.ignore_elements:
+            return
         self.elements.add(element)
         
     def insert_elements(self, elements):

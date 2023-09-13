@@ -1,47 +1,36 @@
 from working_list import WorkingList
 
-def get_incoming_cfg_nodes_vectors_list(incoming_nodes):        
-    all_incoming_vectors = []
-    for incoming_node in incoming_nodes:
-        all_incoming_vectors.append(
-            incoming_node.get_values_vector())
-    return all_incoming_vectors
-
 
 def chaotic_iteration(abstract_domain,
                       program_cfg):
     
-    cfg_nodes_labels = program_cfg.cfg_nodes.keys()
-    working_list = WorkingList(cfg_nodes_labels)
-    
-    
+    cfg_nodes_labels = program_cfg.get_all_cfg_nodes_labels()
+    working_list_ignore_insert_set = program_cfg.exit_labels_set.copy()
+    working_list = WorkingList(cfg_nodes_labels, 
+                               working_list_ignore_insert_set)
     
     while not working_list.isEmpty():
         cfg_node_label = working_list.pop_random_element()
         
         current_cfg_node = program_cfg.get_cfg_node_by_label(
             cfg_node_label)
-
-        incoming_nodes = program_cfg.get_incoming_cfg_nodes_by_node(
-            current_cfg_node)
         
         current_values_vector = current_cfg_node.get_values_vector()
         transformer = current_cfg_node.get_transformer()
         
-        all_incoming_vectors = get_incoming_cfg_nodes_vectors_list(
-            incoming_nodes)
+        all_incoming_vectors = \
+            program_cfg.get_incoming_nodes_values_vectors_by_node_label(
+                cfg_node_label)
         
-        joined_state_vector = abstract_domain.join_vector(transformer,
-                                                          all_incoming_vectors)
+        joined_vector = \
+            abstract_domain.join_vector(transformer,
+                                        all_incoming_vectors)
         
-        new_values_vector = abstract_domain.transform(joined_state_vector, 
+        new_values_vector = abstract_domain.transform(joined_vector, 
                                                       transformer)
         
         if new_values_vector != current_values_vector:
-            dependent_cfg_nodes_labes = filter(
-                lambda node_label: not program_cfg.isExitNode(node_label),
-                current_cfg_node.get_out_labels())
-            
+            dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
             working_list.insert_elements(dependent_cfg_nodes_labes)
         
         
