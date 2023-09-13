@@ -9,3 +9,4 @@ src/table/__pycache__/table.cpython-311.pyc
 src/chaotic_iteration/__pycache__/chaotic_iteration.cpython-311.pyc
 src/control_flow_graph/__pycache__/cfg_node.cpython-311.pyc
 src/control_flow_graph/__pycache__/control_flow_graph.cpython-311.pyc
+src/chaotic_iteration/__pycache__/working_list.cpython-311.pyc
