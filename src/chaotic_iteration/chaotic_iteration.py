@@ -29,10 +29,10 @@ def chaotic_iteration(abstract_domain,
                 abstract_domain.vectors_join_from_list(all_incoming_vectors)
                 
         new_values_vector = abstract_domain.transform(joined_vector,
-                                                      statement,
-                                                      program_cfg.variable_to_index_mapping)
+                                                      statement)
         
         if new_values_vector != current_values_vector:
+            current_cfg_node.update_values_vector(new_values_vector)
             dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
             working_list.insert_elements(dependent_cfg_nodes_labes)
         

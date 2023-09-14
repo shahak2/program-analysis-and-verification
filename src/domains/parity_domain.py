@@ -89,8 +89,7 @@ class ParityDomain(base_domain.BaseDomain):
         return self.meet_table.get_value(item1, item2)
     
     def transform(self, 
-                  statement, 
                   values_vector,
-                  variable_to_index_mapping):
-        
-        pass
+                  statement):
+        # TODO: implement
+        return values_vector
