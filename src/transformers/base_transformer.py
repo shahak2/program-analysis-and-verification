@@ -98,6 +98,9 @@ class BaseTransformer():
         for and_conditions_list in or_conditions_list:
             result = self.evaluate_booleans(and_conditions_list,
                                             values_vector)
+            if result == CANNOT_VALIDATE:
+                return CANNOT_VALIDATE
+            
             if result:
                 return True
         

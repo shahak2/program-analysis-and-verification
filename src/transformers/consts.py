@@ -1,5 +1,7 @@
 from enum import StrEnum
 
+CANNOT_VALIDATE = "Cannot validate"
+
 class STATEMENTS(StrEnum):
     skip = "skip"
     assignment = ":="

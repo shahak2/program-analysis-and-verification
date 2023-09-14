@@ -40,7 +40,7 @@ PARITY_TESTS = [
     ([TOP,  EVEN,   TOP],   "assume(FALSE)",   [BOTTOM, BOTTOM, BOTTOM]),
     
     # Assertions
-    # ([TOP, EVEN,   TOP], "assert (ODD i ODD j) (EVEN i EVEN j)",  [TOP,      EVEN,   TOP     ])
+    ([TOP, EVEN,   TOP], "assert (ODD i ODD j) (EVEN i EVEN j)",  [TOP,      EVEN,   TOP     ])
     # ([TOP, EVEN,   TOP], "assert(ODD i ODD j)",  [TOP,      EVEN,   TOP     ])
     # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])
     # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])

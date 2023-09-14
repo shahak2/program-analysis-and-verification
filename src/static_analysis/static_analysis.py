@@ -42,13 +42,13 @@ def static_analysis(program_path,
 
 def get_args():
     # TODO: Implement from args
-    TESTER_PROGRAM_PATH = "programs/examples/parity_example.txt"
+    # TESTER_PROGRAM_PATH = "programs/examples/parity_example.txt"
+    TESTER_PROGRAM_PATH = "programs/examples/parity_tests/simple_test.txt"
     return TESTER_PROGRAM_PATH
     
 def get_domain():
     # TODO: Implement from args
     return ParityDomain()
-
 
 def main():
     program_path = get_args()
@@ -56,7 +56,6 @@ def main():
     
     static_analysis(program_path, 
                     p_domain)
-
 
 if __name__ == "__main__":
     main()

@@ -13,4 +13,6 @@ def printInfo(print_input):
     if type(print_input) == dict:
         print_input = json.dumps(print_input, indent=6)
     print("\033[94m {}\033[00m" .format(print_input))
-    
+
+def printLog(print_input): 
+    print(print_input)

@@ -1,5 +1,9 @@
 from base_transformer import BaseTransformer
 from consts import *
+from transformer_utils import split_string_by_keywords
+
+BOOLEANS_KEYWORDS = ["ODD", "EVEN"]
+
 
 class ParityTransformer(BaseTransformer):
     def __init__(self):
@@ -39,13 +43,45 @@ class ParityTransformer(BaseTransformer):
             return EVEN
         return ODD
     
-    
-    ######################################
-    ################ HERE ################
-    ######################################
-    
     def evaluate_booleans(self, 
-                          and_conditions_list,
+                          and_conditions_string,
                           values_vector):
-        raise NotImplementedError(
-            f"evaluate_boolean function not implemented")
+        
+        conditions_list = \
+            split_string_by_keywords(and_conditions_string,
+                                     BOOLEANS_KEYWORDS)
+        
+        for condtion in conditions_list:
+            result = self.evaluate_condition(
+                condtion, values_vector)
+            
+            if result == CANNOT_VALIDATE:
+                return CANNOT_VALIDATE
+            
+            if not result:
+                return False
+        
+        return True
+    
+    
+    def is_not_able_to_validate(variable_value):
+        return variable_value == TOP or variable_value == BOTTOM
+    
+    def evaluate_condition(self, 
+                           condition,
+                           values_vector):
+        
+        condition_type, variable = condition.split()
+        self.check_valid_variable(variable)
+        
+        variable_value = \
+            self.get_variable_domain_value(variable, 
+                                           values_vector)
+        
+        if ParityTransformer.is_not_able_to_validate(variable_value):
+            return CANNOT_VALIDATE
+        
+        if condition_type == PARITY_CONDITION_CONSTS.ODD:
+            return variable_value == ODD
+        
+        return variable_value == EVEN
