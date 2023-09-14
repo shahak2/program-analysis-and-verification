@@ -31,6 +31,9 @@ def static_analysis(program_path,
                                    parsed_program.variables,
                                    default_entry_node_value)
     
+    abstract_domain.transformer.set_variables_to_index_mapping(
+        program_cfg.variable_to_index_mapping)
+    
     CI.chaotic_iteration(abstract_domain,
                          program_cfg)
     

@@ -1,100 +1,185 @@
 from consts import *
-
+import transformer_utils as TU
 
 class BaseTransformer():
-    def __init__(self,
-                 variable_to_index_mapping,
-                 values_vector):
-        self.variable_to_index_mapping = variable_to_index_mapping
-        self.values_vector = values_vector
+    def __init__(self):
+        self.variable_to_index_mapping = None
     
-    def parse_statement(self, statement):
+    def set_variables_to_index_mapping(self,
+                                       variable_to_index_mapping: dict):
+        self.variable_to_index_mapping = variable_to_index_mapping
+        
+    def check_transformer_ready(self):
+        if not self.is_transformer_ready():
+            raise RuntimeError(
+                "Cannot use the transformer before setting\
+                    a mapping between variables and their indices")
+    
+    def is_transformer_ready(self):
+        return self.variable_to_index_mapping != None
+    
+    def check_valid_variable(self, variable):
+        if not self.is_valid_variable(variable):
+            raise RuntimeError(
+                f"Cannot use variables that \
+                    are not pre-defined: [{variable}]")
+            
+    def is_valid_variable(self, variable):
+        return variable in self.variable_to_index_mapping.keys()
+    
+    def get_variable_index_in_vector(self, 
+                                     variable):
+        return self.variable_to_index_mapping[variable]
+    
+    def get_variable_domain_value(self, 
+                                  variable, 
+                                  values_vector):
+        variable_index = \
+            self.get_variable_index_in_vector(variable)
+        return values_vector[variable_index]
+    
+    # Parsing 
+    def parse_statement(self, 
+                        statement,
+                        values_vector):
+        self.check_transformer_ready()
         tokens = statement.split()
-
+        original_values = values_vector.copy()
+        
         if tokens[0] == STATEMENTS.skip or \
             tokens[0] == STATEMENTS.entry:
-            self.parse_skip()
+            return self.transform_skip_or_entry(original_values)
+        
         elif tokens[1] == STATEMENTS.assignment:
-            self.parse_assignment(tokens)
-        elif tokens[0] == STATEMENTS.assignment:
-            self.parse_assume(tokens)
+            return self.parse_assignment(tokens, 
+                                         original_values)
+            
+        elif tokens[0] == STATEMENTS.assume:
+            return self.parse_assume(tokens, 
+                                     original_values)
+            
         elif tokens[0] == STATEMENTS.assertion:
-            self.parse_assert(tokens)
+            return self.parse_assert(tokens, 
+                                     original_values)
+            
         else:
             raise SyntaxError(
                 f"Invalid command: {statement}")
-        
-    def parse_skip(self):
-        raise NotImplementedError(
-            f"parse_skip function not implemented")
-
-    def parse_assignment(self, tokens):
+            
+    def parse_assignment(self, 
+                         tokens, 
+                         values_vector):
         assign_to_variable = tokens[0]
-        expression = tokens[1:]
-        if len(tokens) > 3:
-            self.parse_assignment_from_expression(assign_to_variable,
-                                                  expression)
+        self.check_valid_variable(assign_to_variable)
         
-        else:
-            self.parse_assignment_from_expression(assign_to_variable,
-                                                  expression)
-        operator = tokens[2]
-        value = tokens[3]
-
-        if operator == ':=':
-            if value == '?':
-                self.parse_assignment_unknown(variable)
-            elif value.isdigit() or (value[0] == '-' and value[1:].isdigit()):
-                self.parse_assignment_constant(variable, int(value))
-            elif value.isdigit() and value[0] == 'j':
-                self.parse_assignment_j(variable, int(value[1:]))
-            else:
-                raise SyntaxError(f"Invalid assignment: {variable} := {value}")
-        else:
-            raise SyntaxError(f"Invalid assignment operator: {operator}")
-
+        expression = tokens[2:]
+        expression_as_domain_element = \
+            self.evaluate_expression_to_domain_element(expression, 
+                                                       values_vector)
+        
+        return self.transform_assignment(assign_to_variable,
+                                         expression_as_domain_element,
+                                         values_vector)
     
-    def parse_simple_assignment(self, 
-                                assign_to_variable, 
-                                expression):
-        pass
+    # Transforms 
+    def transform_skip_or_entry(self, 
+                                values_vector):
+        return values_vector
+
+    def transform_assignment(self,
+                             assign_to_variable,
+                             expression_as_domain_element,
+                             values_vector):
+        assign_to_variable_index = \
+            self.get_variable_index_in_vector(assign_to_variable)
+            
+        values_vector[assign_to_variable_index] = \
+            expression_as_domain_element
+        return values_vector
     
-    def parse_assignment_from_expression(self, 
-                                         assign_to_variable, 
-                                         expression):
-        raise NotImplementedError(
-            f"parse_assignment_from_expression function not implemented")
+    def evaluate_expression_to_domain_element(self, 
+                                              expression, 
+                                              values_vector):
+        if len(expression) == 1:
+            basic_expression = expression[0]
+            return self.evaluate_basic_expression(basic_expression,
+                                                  values_vector)
+        
+        expression_variable = expression[0]
+        
+        left_side_value = \
+            self.evaluate_basic_expression(expression_variable,
+                                           values_vector)
+        
+        operation = expression[1]
+        
+        right_side_const = expression[2]
+        
+        right_side_value = \
+            self.evaluate_basic_expression(right_side_const,
+                                           values_vector)
+        
+        return self.evaluate_expression_by_operator(left_side_value, 
+                                                    right_side_value,
+                                                    operation)
+        
+    def evaluate_basic_expression(self, 
+                                  basic_expression,
+                                  values_vector):
+        
+        if basic_expression == ASSIGNMENTS_CONSTS.wildcard:
+            return self.evaluate_unknown()
+        
+        elif TU.is_number(basic_expression):
+            number_value = TU.extract_integer_value(basic_expression)
+            return self.evaluate_constant(number_value)
+        
+        self.check_valid_variable(basic_expression)
+        return self.evaluate_variable(basic_expression,
+                                      values_vector)
     
-    def parse_assignment_unknown(self, 
-                                 assign_to_variable):
-        raise NotImplementedError(
-            f"parse_assignment_unknown function not implemented")
-
-    def parse_assignment_constant(self, 
-                                  assign_to_variable, 
-                                  value):
-        raise NotImplementedError(
-            f"parse_assignment_constant function not implemented")
-
-    def parse_assignment_from_variable(self, 
-                                       assign_to_variable, 
-                                       j_value):
-        raise NotImplementedError(
-            f"parse_assignment_from_variable function not implemented")
-
-    def parse_assume(self, tokens):
-        expression = " ".join(tokens[1:])
-        expression = " ".join(tokens[1:])
+    ######################################################    
+    ##########              TODO                ##########
+    ######################################################
+    
+    def parse_assume(self, 
+                     tokens,
+                     values_vector):
         raise NotImplementedError(
             f"parse_assume function not implemented")
 
-    
-    def parse_assert(self, tokens):
-        expression = " ".join(tokens[1:])
-        print(f"Asserting: {expression}")
+    def parse_assert(self, 
+                     tokens,
+                     values_vector):
         raise NotImplementedError(
             f"parse_assert function not implemented")
-       
-
-
- 
+    
+    def evaluate_boolean(self):
+        pass
+    
+    ######################################################
+    ######################################################
+    ######################################################
+    
+    ### Evaluation Methods to override
+    def evaluate_unknown(self):
+        raise NotImplementedError(
+            f"evaluate_unknown function not implemented")
+        
+    def evaluate_constant(self, 
+                          value: int):
+        raise NotImplementedError(
+            f"evaluate_constant function not implemented")
+        
+    def evaluate_variable(self, 
+                          variable,
+                          values_vector):
+        raise NotImplementedError(
+            f"evaluate_variable function not implemented")
+        
+    def evaluate_expression_by_operator(self, 
+                                        value1,
+                                        value2,
+                                        operation):
+        raise NotImplementedError(
+            f"evaluate_expression_by_operator function not implemented")

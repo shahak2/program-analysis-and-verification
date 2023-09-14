@@ -14,7 +14,7 @@
             "justMyCode": true
         },
         {
-            "name": "Parity Domain Test",
+            "name": "Domains Tests",
             "cwd": "${workspaceFolder}",
             "type": "python",
             "request": "launch",
@@ -28,6 +28,15 @@
             "type": "python",
             "request": "launch",
             "program": "src/static_analysis/static_analysis.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Transformers Tests",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "tests/transformers/transformers_tests.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

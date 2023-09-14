@@ -2,11 +2,14 @@ import sys
 
 SRC_RELATIVE_PATH = "src/"
 TABLE_RELATIVE_PATH = SRC_RELATIVE_PATH + "table/"
+TRANSFORMERS_RELATIVE_PATH = SRC_RELATIVE_PATH + "transformers/"
 
 sys.path.insert(1, TABLE_RELATIVE_PATH)
+sys.path.insert(1, TRANSFORMERS_RELATIVE_PATH)
 
 import base_domain
 from table import Table
+from parity_transformer import ParityTransformer
 
 ODD    = "ODD"
 EVEN   = "EVEN"
@@ -21,6 +24,7 @@ class ParityDomain(base_domain.BaseDomain):
         self.meet_table = ParityDomain.get_meet_table(DOMAIN)
         self.join_table = ParityDomain.get_join_table(DOMAIN)
         super().__init__(DOMAIN)
+        self.transformer = ParityTransformer()
     
     def get_join_table(domain):
         join_table = Table(list(domain))
@@ -88,6 +92,5 @@ class ParityDomain(base_domain.BaseDomain):
                   statement, 
                   values_vector,
                   variable_to_index_mapping):
+        
         pass
-        # raise NotImplementedError(
-        #     'transform method not implemented')

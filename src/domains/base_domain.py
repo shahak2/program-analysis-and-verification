@@ -8,6 +8,9 @@ class BaseDomain:
         meet
         top
         bottom
+        transformer - Input:  statement, values_vector
+                      Output: parses the statement and performs the relevant 
+                              abstract transform on values_vector.
     """
     
     def __init__(self, 
@@ -18,6 +21,7 @@ class BaseDomain:
         self.domain = D
         self.TOP = TOP
         self.BOTTOM = BOTTOM
+        self.transformer = None
         
     def meet(self, item1, item2):
         ''' Returns the result for item1 (MEET) item2'''
@@ -68,7 +72,7 @@ class BaseDomain:
                                                  vectors_list[vector_number])
             
             return result_vector
-        
+    
     def transform(self, 
                   statement, 
                   values_vector,
