@@ -86,3 +86,11 @@ class ParityDomain(base_domain.BaseDomain):
         ''' Returns the result for item1 (MEET) item2'''
         self.validate_elements([item1, item2])
         return self.meet_table.get_value(item1, item2)
+    
+    def transform(self, 
+                  statement, 
+                  values_vector,
+                  variable_to_index_mapping):
+        pass
+        # raise NotImplementedError(
+        #     'transform method not implemented')

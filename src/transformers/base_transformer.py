@@ -7,7 +7,12 @@ class STATEMENTS(StrEnum):
     assertion = "assert"
     entry = "entry"
 
+
 class BaseTransformer():
+    def __init__(self,
+                 variable_to_index_mapping):
+        self.variable_to_index_mapping = variable_to_index_mapping
+    
     def parse_statement(self, statement):
         tokens = statement.split()
 
@@ -24,10 +29,18 @@ class BaseTransformer():
             raise SyntaxError(f"Invalid command: {statement}")
         
     def parse_skip(self):
-        print("Executing 'skip' command")
+        raise NotImplementedError(
+            f"parse_skip function not implemented")
 
     def parse_assignment(self, tokens):
-        variable = tokens[0]
+        assign_to_variable = tokens[0]
+        
+        if len(tokens) > 3:
+            expression = tokens[1:]
+            self.parse_assignment_from_expression(assign_to_variable,
+                                                  expression)
+        
+        
         operator = tokens[2]
         value = tokens[3]
 
@@ -43,34 +56,51 @@ class BaseTransformer():
         else:
             raise SyntaxError(f"Invalid assignment operator: {operator}")
 
+    def parse_assignment_from_expression(self, 
+                                         assign_to_variable, 
+                                         expression):
+        raise NotImplementedError(
+            f"parse_assignment_from_expression function not implemented")
     
-    def parse_assignment_unknown(self, variable):
-        print(f"Assigning '{variable}' to unknown value")
+    def parse_assignment_unknown(self, 
+                                 assign_to_variable):
+        raise NotImplementedError(
+            f"parse_assignment_unknown function not implemented")
 
-    def parse_assignment_constant(self, variable, value):
-        print(f"Assigning '{variable}' to constant {value}")
+    def parse_assignment_constant(self, 
+                                  assign_to_variable, 
+                                  value):
+        raise NotImplementedError(
+            f"parse_assignment_constant function not implemented")
 
-    def parse_assignment_j(self, variable, j_value):
-        print(f"Assigning '{variable}' to j + {j_value}")
+    def parse_assignment_from_variable(self, 
+                                       assign_to_variable, 
+                                       j_value):
+        raise NotImplementedError(
+            f"parse_assignment_from_variable function not implemented")
 
     def parse_assume(self, tokens):
         expression = " ".join(tokens[1:])
-        print(f"Assuming: {expression}")
+        expression = " ".join(tokens[1:])
+        raise NotImplementedError(
+            f"parse_assume function not implemented")
 
     def parse_assert(self, tokens):
         expression = " ".join(tokens[1:])
         print(f"Asserting: {expression}")
+        raise NotImplementedError(
+            f"parse_assert function not implemented")
        
 
 
  
-TEST_STATEMENTS = [
-    "entry",
-    "skip",
-    # "n := ?",
-    # "i := j + 1",
-]
+# TEST_STATEMENTS = [
+#     "entry",
+#     "skip",
+#     # "n := ?",
+#     # "i := j + 1",
+# ]
 
-bt = BaseTransformer()
-for test in TEST_STATEMENTS:
-    bt.parse_statement(test)
+# bt = BaseTransformer([])
+# for test in TEST_STATEMENTS:
+#     bt.parse_statement(test)

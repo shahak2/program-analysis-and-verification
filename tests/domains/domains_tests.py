@@ -3,14 +3,14 @@ from enum import StrEnum
 
 SRC_RELATIVE_PATH = "src/"
 PARITY_DOMAIN_PATH = SRC_RELATIVE_PATH + 'domains/'
-TESTS_RELATIVE_PATH = "tests/"
+UTILS_RELATIVE_PATH = "utils/"
 
 sys.path.insert(1, PARITY_DOMAIN_PATH)
-sys.path.insert(1, TESTS_RELATIVE_PATH)
+sys.path.insert(1, UTILS_RELATIVE_PATH)
 
 import parity_consts
 from parity_domain import ParityDomain
-import test_utils
+import utils
 
 class OPERATIONS(StrEnum):
     meet = "meet"
@@ -18,23 +18,23 @@ class OPERATIONS(StrEnum):
     contains = "contains"
     
 def test_contains_relations(domain, operation, relations):
-    test_utils.printYellow(f"Operation {operation} Valid Test")
+    utils.printYellow(f"Operation {operation} Valid Test")
     for relation in relations:
-        test_utils.printInfo(f'Testing: {relation[0]:7} <=  {relation[1]:7} =  {relation[2]} ')
+        utils.printInfo(f'Testing: {relation[0]:7} <=  {relation[1]:7} =  {relation[2]} ')
         assert getattr(domain, operation)(relation[0], relation[1]) == relation[2], "Invalid result"
         
 def test_valid_relations(domain, operation, relations, is_symmetric_relation = True):
-    test_utils.printYellow(f"Operation {operation} Valid Test")
+    utils.printYellow(f"Operation {operation} Valid Test")
     for relation in relations:
-        test_utils.printInfo(f'Testing: {relation[0]:7} {operation}  {relation[1]:7} =  {relation[2]} ')
+        utils.printInfo(f'Testing: {relation[0]:7} {operation}  {relation[1]:7} =  {relation[2]} ')
         assert getattr(domain, operation)(relation[0], relation[1]) == relation[2], "Invalid result"
         if is_symmetric_relation:
             assert getattr(domain, operation)(relation[1], relation[0]) == relation[2], "Invalid result"
 
 def test_invalid_relations(domain, operation, relations, is_symmetric_relation = True):
-    test_utils.printYellow(f"Operation {operation} Invalid Test")
+    utils.printYellow(f"Operation {operation} Invalid Test")
     for relation in relations:
-        test_utils.printInfo(f'Testing: {relation[0]:7} {operation}  {relation[1]:7} =  {relation[2]} ')
+        utils.printInfo(f'Testing: {relation[0]:7} {operation}  {relation[1]:7} =  {relation[2]} ')
         assert getattr(domain, operation)(relation[0], relation[1]) != relation[2], "Invalid result"
         if is_symmetric_relation:
             assert getattr(domain, operation)(relation[1], relation[0]) != relation[2], "Invalid result"
@@ -49,7 +49,7 @@ def test_vector_join(domain,
                 f"Expected {test_vector[0]} (JOIN) {test_vector[1]} == {test_vector[2]}!"
         
 def parity_domain_tester():
-    test_utils.printYellow("Parity Domain Test")
+    utils.printYellow("Parity Domain Test")
     try:
         parity_d = ParityDomain()
         # CONTAINS
@@ -78,19 +78,19 @@ def parity_domain_tester():
         test_vector_join(parity_d,
                          parity_consts.VECTOR_JOIN_TESTS)
     except Exception as e:
-        test_utils.printError(f'{e}')
+        utils.printError(f'{e}')
         return
-    test_utils.printSuccess("All tests Passed!")
+    utils.printSuccess("All tests Passed!")
     
 
 
 def summation_domain_tester():
     # TODO: Implement
-    test_utils.printError(f'summation_domain_tester not Implemented')
+    utils.printError(f'summation_domain_tester not Implemented')
 
 def combined_domain_tester():
     # TODO: Implement
-    test_utils.printError(f'combined_domain_tester not Implemented')
+    utils.printError(f'combined_domain_tester not Implemented')
 
 def run_tests():
     parity_domain_tester()
@@ -98,5 +98,5 @@ def run_tests():
     combined_domain_tester()
 
 if __name__ == '__main__':
-    test_utils.printYellow("\n=== Abstract Domains Tester ===")
+    utils.printYellow("\n=== Abstract Domains Tester ===")
     run_tests()

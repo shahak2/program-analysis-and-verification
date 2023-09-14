@@ -8,8 +8,8 @@ class BaseDomain:
         meet
         top
         bottom
-    
     """
+    
     def __init__(self, 
                  D, 
                  TOP = "TOP", 
@@ -20,13 +20,16 @@ class BaseDomain:
         self.BOTTOM = BOTTOM
         
     def meet(self, item1, item2):
-        raise NameError('Meet method not implemented')
+        raise NotImplementedError(
+            'Meet method not implemented')
 
     def join(self, item1, item2):
-        raise NameError('Join method not implemented')
+        raise NotImplementedError(
+            'Join method not implemented')
     
     def contains(self, item1, item2):       
-        raise NameError('Contains method not implemented')
+        raise NotImplementedError(
+            'Contains method not implemented')
     
     def validate_elements(self, items):
         invalid_items = set()
@@ -34,7 +37,8 @@ class BaseDomain:
             if item not in self.domain:
                 invalid_items.add(item)
         if len(invalid_items) > 0:
-            raise NameError(f"Elements {invalid_items} not in domain")
+            raise NotImplementedError(
+                f"Elements {invalid_items} not in domain")
 
     def vector_join(self, 
                     values_vector1,
@@ -66,7 +70,7 @@ class BaseDomain:
                   statement, 
                   values_vector,
                   variable_to_index_mapping):
-        raise NameError('transform method not implemented')
+        raise NotImplementedError('transform method not implemented')
     
     
     
