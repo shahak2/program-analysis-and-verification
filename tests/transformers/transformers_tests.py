@@ -12,8 +12,6 @@ import utils
 from parity_transformer import ParityTransformer
 from transformers_consts import *
 
-
-
 def perform_test(transformer, test):
     values_vector = test[0]
     statement = test[1]

@@ -1,4 +1,3 @@
-# from consts import *
 from base_transformer import BaseTransformer
 from consts import *
 

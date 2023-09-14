@@ -91,5 +91,5 @@ class ParityDomain(base_domain.BaseDomain):
     def transform(self, 
                   values_vector,
                   statement):
-        # TODO: implement
-        return values_vector
+        return self.transformer.parse_statement(statement,
+                                                values_vector)
