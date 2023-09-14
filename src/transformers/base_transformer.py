@@ -1,17 +1,12 @@
-from enum import StrEnum
-
-class STATEMENTS(StrEnum):
-    skip = "skip"
-    assignment = ":="
-    assume = "assume"
-    assertion = "assert"
-    entry = "entry"
+from consts import *
 
 
 class BaseTransformer():
     def __init__(self,
-                 variable_to_index_mapping):
+                 variable_to_index_mapping,
+                 values_vector):
         self.variable_to_index_mapping = variable_to_index_mapping
+        self.values_vector = values_vector
     
     def parse_statement(self, statement):
         tokens = statement.split()
@@ -26,7 +21,8 @@ class BaseTransformer():
         elif tokens[0] == STATEMENTS.assertion:
             self.parse_assert(tokens)
         else:
-            raise SyntaxError(f"Invalid command: {statement}")
+            raise SyntaxError(
+                f"Invalid command: {statement}")
         
     def parse_skip(self):
         raise NotImplementedError(
@@ -34,13 +30,14 @@ class BaseTransformer():
 
     def parse_assignment(self, tokens):
         assign_to_variable = tokens[0]
-        
+        expression = tokens[1:]
         if len(tokens) > 3:
-            expression = tokens[1:]
             self.parse_assignment_from_expression(assign_to_variable,
                                                   expression)
         
-        
+        else:
+            self.parse_assignment_from_expression(assign_to_variable,
+                                                  expression)
         operator = tokens[2]
         value = tokens[3]
 
@@ -56,6 +53,12 @@ class BaseTransformer():
         else:
             raise SyntaxError(f"Invalid assignment operator: {operator}")
 
+    
+    def parse_simple_assignment(self, 
+                                assign_to_variable, 
+                                expression):
+        pass
+    
     def parse_assignment_from_expression(self, 
                                          assign_to_variable, 
                                          expression):
@@ -85,6 +88,7 @@ class BaseTransformer():
         raise NotImplementedError(
             f"parse_assume function not implemented")
 
+    
     def parse_assert(self, tokens):
         expression = " ".join(tokens[1:])
         print(f"Asserting: {expression}")
@@ -94,13 +98,3 @@ class BaseTransformer():
 
 
  
-# TEST_STATEMENTS = [
-#     "entry",
-#     "skip",
-#     # "n := ?",
-#     # "i := j + 1",
-# ]
-
-# bt = BaseTransformer([])
-# for test in TEST_STATEMENTS:
-#     bt.parse_statement(test)

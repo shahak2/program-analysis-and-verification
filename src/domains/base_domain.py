@@ -20,14 +20,17 @@ class BaseDomain:
         self.BOTTOM = BOTTOM
         
     def meet(self, item1, item2):
+        ''' Returns the result for item1 (MEET) item2'''
         raise NotImplementedError(
             'Meet method not implemented')
 
     def join(self, item1, item2):
+        ''' Returns the result for item1 (JOIN) item2'''
         raise NotImplementedError(
             'Join method not implemented')
     
-    def contains(self, item1, item2):       
+    def contains(self, item1, item2):  
+        ''' Returns true if item1 <= item2. In words, item2 contains item1. '''     
         raise NotImplementedError(
             'Contains method not implemented')
     
@@ -70,7 +73,8 @@ class BaseDomain:
                   statement, 
                   values_vector,
                   variable_to_index_mapping):
-        raise NotImplementedError('transform method not implemented')
+        raise NotImplementedError(
+            'transform method not implemented')
     
     
     

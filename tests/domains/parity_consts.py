@@ -1,3 +1,11 @@
+from enum import StrEnum
+
+class OPERATIONS(StrEnum):
+    meet = "meet"
+    join = "join"
+    contains = "contains"
+
+
 TOP = "TOP"
 BOTTOM = "BOTTOM"
 ODD = "ODD"
@@ -56,7 +64,7 @@ JOIN_INVALID_RELATIONS = [
     (TOP,     BOTTOM,    BOTTOM )
 ]
 
-# [(vector1, vector2, expected_result), ...]
+# [(vector1, vector2, expected_results_vector), ...]
 VECTOR_JOIN_TESTS = [
     ([TOP, TOP, TOP],       [TOP, TOP, TOP],        [TOP, TOP, TOP] ),
     ([TOP, TOP, TOP],       [BOTTOM, EVEN, ODD],    [TOP, TOP, TOP] ),

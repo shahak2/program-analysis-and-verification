@@ -15,7 +15,7 @@ TOP    = "TOP"
 
 class ParityDomain(base_domain.BaseDomain):
     def __init__(self):
-        DOMAIN = {"TOP", "EVEN", "ODD", "BOTTOM"}
+        DOMAIN = {TOP, EVEN, ODD, BOTTOM}
         
         self.contains_table = ParityDomain.get_contains_table()
         self.meet_table = ParityDomain.get_meet_table(DOMAIN)
@@ -73,17 +73,14 @@ class ParityDomain(base_domain.BaseDomain):
         }
             
     def contains(self, item1, item2):
-        ''' Returns true if item1 <= item2. In words, item2 contains item1. '''
         self.validate_elements([item1, item2])
         return item1 in self.contains_table[item2]
           
     def join(self, item1, item2):
-        ''' Returns the result for item1 (JOIN) item2'''
         self.validate_elements([item1, item2])
         return self.join_table.get_value(item1, item2)
     
     def meet(self, item1, item2):
-        ''' Returns the result for item1 (MEET) item2'''
         self.validate_elements([item1, item2])
         return self.meet_table.get_value(item1, item2)
     

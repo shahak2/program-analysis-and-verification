@@ -5,7 +5,7 @@ def printError(print_input):
 def printSuccess(print_input): 
     print("\033[92m {}\033[00m" .format(print_input))
   
-def printYellow(print_input): 
+def printMessage(print_input): 
     print("\033[93m {}\033[00m" .format(print_input))
  
 def printInfo(print_input): 

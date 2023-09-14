@@ -11,7 +11,7 @@ from parser import Parser
 import utils
 
 def parser_tester():
-    utils.printYellow("Test 1: language_example.txt")
+    utils.printMessage("Test 1: language_example.txt")
     
     TESTER_PROGRAM_PATH = SRC_RELATIVE_PATH +\
         "../programs/examples/language_example.txt"
@@ -42,9 +42,9 @@ def parser_tester():
     utils.printSuccess("Success!")
     
 def run_tests():
-    utils.printYellow("Running tests")
+    utils.printMessage("Running tests")
     parser_tester()
 
 if __name__ == '__main__':
-    utils.printYellow("\n=== Parser Tester ===")
+    utils.printMessage("\n=== Parser Tester ===")
     run_tests()
