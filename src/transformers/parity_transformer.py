@@ -38,3 +38,14 @@ class ParityTransformer(BaseTransformer):
         if value1 == value2:
             return EVEN
         return ODD
+    
+    
+    ######################################
+    ################ HERE ################
+    ######################################
+    
+    def evaluate_booleans(self, 
+                          and_conditions_list,
+                          values_vector):
+        raise NotImplementedError(
+            f"evaluate_boolean function not implemented")

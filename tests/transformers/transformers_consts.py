@@ -20,6 +20,7 @@ PARITY_MOCK_VARIABLES = {
 }
 
 PARITY_TESTS = [
+    # Assignments
     ([TOP, BOTTOM, ODD], "entry",       [TOP,      BOTTOM, ODD     ]),
     ([TOP, BOTTOM, ODD], "skip",        [TOP,      BOTTOM, ODD     ]),
     ([TOP, BOTTOM, ODD], "j := ?",      [TOP,      BOTTOM, BOTTOM  ]),
@@ -28,6 +29,23 @@ PARITY_TESTS = [
     ([TOP, BOTTOM, ODD], "i := n + 1",  [BOTTOM,   BOTTOM, ODD     ]),
     ([TOP, EVEN,   ODD], "i := n - 1",  [ODD,      EVEN,   ODD     ]),
     ([TOP, EVEN,   TOP], "i := j - 1",  [TOP,      EVEN,   TOP     ]),
+    
+    # Assumptions
+    ([TOP,  EVEN,   TOP],   "assume",          [TOP,    EVEN,   TOP   ]),
+    ([EVEN, EVEN,   TOP],   "assume(i = n)",   [EVEN,   EVEN,   TOP   ]), # good: vars are equal
+    ([TOP,  EVEN,   TOP],   "assume(i = n)",   [BOTTOM, BOTTOM, BOTTOM]), # bad: vars are not equal
+    ([EVEN, EVEN,   ODD],   "assume(i != j)",  [EVEN,   EVEN,   ODD   ]), # good: vars are not equal
+    ([EVEN, EVEN,   EVEN],  "assume(i != j)",  [BOTTOM, BOTTOM, BOTTOM]), # bad: vars are equal
+    ([TOP,  EVEN,   TOP],   "assume(TRUE)",    [TOP,    EVEN,   TOP   ]),
+    ([TOP,  EVEN,   TOP],   "assume(FALSE)",   [BOTTOM, BOTTOM, BOTTOM]),
+    
+    # Assertions
+    # ([TOP, EVEN,   TOP], "assert (ODD i ODD j) (EVEN i EVEN j)",  [TOP,      EVEN,   TOP     ])
+    # ([TOP, EVEN,   TOP], "assert(ODD i ODD j)",  [TOP,      EVEN,   TOP     ])
+    # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])
+    # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])
+    # ([TOP, EVEN,   TOP], "assert (ODD i EVEN i)",  [TOP,      EVEN,   TOP     ])
+    # ([TOP, EVEN,   TOP], "assert (ODD i EVEN i ODD n ODD j ODD i ODD i)",  [TOP,      EVEN,   TOP     ])
 ]
 
 PARITY_MOCK_VARIABLES_LONG = {

@@ -15,12 +15,18 @@ class ASSIGNMENTS_CONSTS(StrEnum):
     wildcard = "?"
     
       
-class BOOLENS(StrEnum):
-    add = "TRUE"
-    sub = "FALSE"
+class BOOLEANS(StrEnum):
+    true = "TRUE"
+    false = "FALSE"
 
 class NUMBER_CONSTS(StrEnum):
     one = "1"
+    
+class CONDITION_CONSTS(StrEnum):
+    left_bracket = "("
+    right_bracket = ")"
+    equal = "="
+    not_equal = "!="
     
 # Parity Consts
 
@@ -28,3 +34,7 @@ ODD    = "ODD"
 EVEN   = "EVEN"
 BOTTOM = "BOTTOM"
 TOP    = "TOP"
+
+class PARITY_CONDITION_CONSTS(StrEnum):
+    even = "EVEN"
+    ODD = "ODD"

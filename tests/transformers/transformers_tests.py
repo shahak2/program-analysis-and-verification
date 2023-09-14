@@ -16,16 +16,12 @@ def perform_test(transformer, test):
     values_vector = test[0]
     statement = test[1]
     expected_vector = test[2]
-            
     result = transformer.parse_statement(statement, 
                                          values_vector)
-    
     if result != expected_vector:
-        utils.printError(
+        raise RuntimeError(
             f'Parsing failed for [{statement}]# {values_vector}\
                 \n        Expected {expected_vector} == {result}')
-        
-        return
     utils.printInfo(
         f'Test passed: [{statement}]# {values_vector} == {result}')
 
