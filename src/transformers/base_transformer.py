@@ -94,16 +94,20 @@ class BaseTransformer():
         matches = re.findall(regex_pattern, statement)
 
         or_conditions_list = [match.strip() for match in matches]
+
+        did_get_cannot_validate = False
         
         for and_conditions_list in or_conditions_list:
             result = self.evaluate_booleans(and_conditions_list,
                                             values_vector)
             if result == CANNOT_VALIDATE:
-                return CANNOT_VALIDATE
+                did_get_cannot_validate = True
             
-            if result:
+            if result == True:
                 return True
         
+        if did_get_cannot_validate:
+            return CANNOT_VALIDATE
         return False
     
     # Transforms 

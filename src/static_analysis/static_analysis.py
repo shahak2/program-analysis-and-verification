@@ -22,7 +22,7 @@ from control_flow_graph import ControlFlowGraph
 
 def static_analysis(program_path, 
                     abstract_domain):
-    utils.printInfo("Running static analysis...")
+    utils.printMessage("Running static analysis...")
     parsed_program = Parser(program_path)
     
     default_entry_node_value = abstract_domain.TOP
@@ -37,7 +37,7 @@ def static_analysis(program_path,
     CI.chaotic_iteration(abstract_domain,
                          program_cfg)
     
-    utils.printSuccess("Analysis finished")
+    utils.printMessage("Analysis finished")
 
 
 def get_args():
