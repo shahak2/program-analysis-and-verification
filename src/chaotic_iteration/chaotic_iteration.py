@@ -14,11 +14,12 @@ def is_assertion_statement(statement):
 def should_stop_program(value):
     return value == False
 
-def print_status(current_values_vector, 
+def print_status(current_cfg_node,
+                 joined_vector, 
                  statement, 
                  counter):
     utils.printLog(
-        f"{counter:2}. Calculating [{statement:6}]# {current_values_vector}")
+        f"{counter:2}. Calculating for {current_cfg_node.node_label}: [{statement:6}]# {joined_vector}")
     
 
 def chaotic_iteration(abstract_domain,
@@ -31,7 +32,7 @@ def chaotic_iteration(abstract_domain,
     
     counter = 0
     
-    while not working_list.isEmpty():
+    while not working_list.is_empty():
         counter += 1
         
         cfg_node_label = working_list.pop_random_element()
@@ -42,10 +43,6 @@ def chaotic_iteration(abstract_domain,
         current_values_vector = current_cfg_node.get_values_vector()
         statement = current_cfg_node.get_statement()
         
-        print_status(current_values_vector, 
-                     statement, 
-                     counter)
-        
         if current_cfg_node.is_entry_node():
             joined_vector = current_values_vector
         else:
@@ -54,6 +51,11 @@ def chaotic_iteration(abstract_domain,
                     cfg_node_label)
             joined_vector = \
                 abstract_domain.vectors_join_from_list(all_incoming_vectors)
+        
+        print_status(current_cfg_node,
+                     joined_vector, 
+                     statement, 
+                     counter)
         
         new_values_vector = abstract_domain.transform(joined_vector,
                                                       statement)
@@ -70,9 +72,8 @@ def chaotic_iteration(abstract_domain,
                 working_list.insert_elements(dependent_cfg_nodes_labes)
                 utils.printSuccess(
                     f"\"{statement}\" assertion is valid")
-            continue
         
-        if new_values_vector != current_values_vector:
+        elif new_values_vector != current_values_vector:
             current_cfg_node.update_values_vector(new_values_vector)
             dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
             working_list.insert_elements(dependent_cfg_nodes_labes)

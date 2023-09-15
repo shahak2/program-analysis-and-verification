@@ -11,7 +11,7 @@ class WorkingList():
             self.elements.remove(random_element)
         return random_element
     
-    def isEmpty(self):
+    def is_empty(self):
         return len(self.elements) == 0
     
     def insert_element(self, element):

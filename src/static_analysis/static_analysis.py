@@ -42,8 +42,8 @@ def static_analysis(program_path,
 
 def get_args():
     # TODO: Implement from args
-    # TESTER_PROGRAM_PATH = "programs/examples/parity_example.txt"
-    TESTER_PROGRAM_PATH = "programs/examples/parity_tests/simple_test.txt"
+    TESTER_PROGRAM_PATH = "programs/examples/parity_example.txt"
+    # TESTER_PROGRAM_PATH = "programs/examples/parity_tests/simple_test.txt"
     return TESTER_PROGRAM_PATH
     
 def get_domain():
