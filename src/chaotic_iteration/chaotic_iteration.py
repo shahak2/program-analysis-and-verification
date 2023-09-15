@@ -68,15 +68,15 @@ def chaotic_iteration(abstract_domain,
             elif new_values_vector == CANNOT_VALIDATE:
                 utils.printInfo(f"Cannot validate '{statement}'")
             else:
-                dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
-                working_list.insert_elements(dependent_cfg_nodes_labes)
+                dependent_cfg_nodes_labels = current_cfg_node.get_out_labels()
+                working_list.insert_elements(dependent_cfg_nodes_labels)
                 utils.printSuccess(
                     f"\"{statement}\" assertion is valid")
         
         elif new_values_vector != current_values_vector:
             current_cfg_node.update_values_vector(new_values_vector)
-            dependent_cfg_nodes_labes = current_cfg_node.get_out_labels()
-            working_list.insert_elements(dependent_cfg_nodes_labes)
+            dependent_cfg_nodes_labels = current_cfg_node.get_out_labels()
+            working_list.insert_elements(dependent_cfg_nodes_labels)
         
 
 
