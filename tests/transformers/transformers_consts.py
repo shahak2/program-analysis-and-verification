@@ -41,12 +41,14 @@ PARITY_TESTS = [
     ([TOP,  EVEN,   TOP],   "assume(FALSE)",   [BOTTOM, BOTTOM, BOTTOM]),
     
     # Assertions
-    ([TOP, EVEN, TOP], "assert (ODD i ODD j) (EVEN i EVEN j)",  CANNOT_VALIDATE)
-    # ([TOP, EVEN,   TOP], "assert(ODD i ODD j)",  [TOP,      EVEN,   TOP     ])
-    # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])
-    # ([TOP, EVEN,   TOP], "assert (ODD i)",  [TOP,      EVEN,   TOP     ])
-    # ([TOP, EVEN,   TOP], "assert (ODD i EVEN i)",  [TOP,      EVEN,   TOP     ])
-    # ([TOP, EVEN,   TOP], "assert (ODD i EVEN i ODD n ODD j ODD i ODD i)",  [TOP,      EVEN,   TOP     ])
+    ([TOP,    EVEN,  TOP],  "assert (ODD i ODD j) (EVEN i EVEN j)", CANNOT_VALIDATE),
+    ([ODD,    EVEN,  TOP],  "assert (ODD i)",                       True),
+    ([EVEN,   EVEN,  TOP],  "assert (ODD i)",                       False),
+    ([EVEN,   EVEN,  TOP],  "assert (ODD i)",                       False),
+    ([BOTTOM, EVEN,  TOP],  "assert (ODD i)",                       CANNOT_VALIDATE),
+    ([TOP,    TOP,   TOP],  "assert (EVEN i) (EVEN j)",             CANNOT_VALIDATE),
+    ([EVEN,   TOP,   TOP],  "assert (EVEN i) (EVEN j)",             True),
+    ([TOP,    EVEN,  EVEN], "assert (EVEN i) (EVEN j)",             True)
 ]
 
 PARITY_MOCK_VARIABLES_LONG = {
