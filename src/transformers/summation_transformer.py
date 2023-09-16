@@ -3,35 +3,38 @@ from consts import *
 from transformer_utils import split_string_by_keywords
 
 BOOLEANS_KEYWORDS = [
-    PARITY_CONDITION_CONSTS.odd, 
-    PARITY_CONDITION_CONSTS.even
+    SUMMATION_CONDITION_CONSTS.summation
 ]
 
 
-class ParityTransformer(BaseTransformer):
+class SummationTransformer(BaseTransformer):
     def __init__(self):
         
         super().__init__()
     
-    def get_constant_domain_value(value: int):
-        if value % 2 == 0:
-            return EVEN
-        return ODD
+    def evaluate_constant(self, 
+                          value: int):
+        return value
     
     def evaluate_unknown(self):
         return BOTTOM
         
-    def evaluate_constant(self, 
-                          value: int):
-        return ParityTransformer.get_constant_domain_value(value)
-        
+    
+
+    
+    ##########################################
+    ##########################################
+    ################## HERE ##################
+    ##########################################
+    ##########################################
+
     def evaluate_variable(self,
                           variable,
                           values_vector):
         self.check_valid_variable(variable)
         return self.get_variable_domain_value(variable, 
                                               values_vector)
-
+    
     def evaluate_expression_by_operator(self, 
                                         value1,
                                         value2,
@@ -81,7 +84,7 @@ class ParityTransformer(BaseTransformer):
             self.get_variable_domain_value(variable, 
                                            values_vector)
         
-        if ParityTransformer.is_not_able_to_validate(variable_value):
+        if SummationTransformer.is_not_able_to_validate(variable_value):
             return CANNOT_VALIDATE
         
         if condition_type == PARITY_CONDITION_CONSTS.odd:

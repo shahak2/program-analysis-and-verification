@@ -23,7 +23,8 @@ def print_status(current_cfg_node,
     
 
 def chaotic_iteration(abstract_domain,
-                      program_cfg):
+                      program_cfg,
+                      graph_disp_manager):
     
     cfg_nodes_labels = program_cfg.get_all_cfg_nodes_labels()
     working_list_ignore_insert_set = program_cfg.exit_labels_set.copy()

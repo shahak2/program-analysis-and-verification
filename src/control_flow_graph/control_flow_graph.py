@@ -72,9 +72,9 @@ class ControlFlowGraph:
         for cfg_node in self.cfg_nodes.values():
             out_nodes_labels_set = cfg_node.get_out_labels()
             for out_node_label in out_nodes_labels_set:
-                if self.is_exit_node(out_node_label):
-                    continue
                 cfg_out_node = self.get_cfg_node_by_label(out_node_label)
+                if not cfg_out_node:
+                    continue
                 cfg_out_node.add_in_label(cfg_node.node_label)
                 
     def is_exit_node(self, node_label):
@@ -149,17 +149,30 @@ class ControlFlowGraph:
     
     def get_cfg_node_by_label(self, 
                               node_label):
+        if self.is_exit_node(node_label):
+            return None
         if node_label not in self.cfg_nodes:
             raise NameError(f'Label {node_label} does not exist in the CFG!')
         
         return self.cfg_nodes[node_label]
     
+    def get_neighbor_nodes_labels(self, 
+                                  cfg_node_label):
+        cfg_node = self.get_cfg_node_by_label(
+            cfg_node_label)
+        
+        if not cfg_node:
+            return None
+        return cfg_node.get_out_labels()
+
+
     def get_incoming_cfg_nodes_by_node(self, 
                                        cfg_node: CfgNode):
         in_cfg_nodes = []
         for incoming_node_label in cfg_node.in_labels:
-            in_cfg_nodes.append(
-                self.get_cfg_node_by_label(incoming_node_label))
+            cfg_node_label = self.get_cfg_node_by_label(incoming_node_label)
+            if cfg_node_label:
+                in_cfg_nodes.append(cfg_node_label)
         return in_cfg_nodes
     
     def get_all_cfg_nodes_labels(self):
@@ -168,6 +181,8 @@ class ControlFlowGraph:
     def get_incoming_nodes_values_vectors_by_node_label(self, 
                                                         node_label):
         cfg_node = self.get_cfg_node_by_label(node_label)
+        if not cfg_node:
+            return []
         all_incoming_cfg_nodes = \
             self.get_incoming_cfg_nodes_by_node(cfg_node)
             

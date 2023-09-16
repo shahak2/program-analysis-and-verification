@@ -87,9 +87,3 @@ class ParityDomain(base_domain.BaseDomain):
     def meet(self, item1, item2):
         self.validate_elements([item1, item2])
         return self.meet_table.get_value(item1, item2)
-    
-    def transform(self, 
-                  values_vector,
-                  statement):
-        return self.transformer.parse_statement(statement,
-                                                values_vector)

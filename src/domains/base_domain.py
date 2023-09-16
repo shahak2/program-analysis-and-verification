@@ -27,11 +27,6 @@ class BaseDomain:
         ''' Returns the result for item1 (MEET) item2'''
         raise NotImplementedError(
             'Meet method not implemented')
-
-    def join(self, item1, item2):
-        ''' Returns the result for item1 (JOIN) item2'''
-        raise NotImplementedError(
-            'Join method not implemented')
     
     def contains(self, item1, item2):  
         ''' Returns true if item1 <= item2. In words, item2 contains item1. '''     
@@ -74,11 +69,23 @@ class BaseDomain:
             return result_vector
     
     def transform(self, 
-                  statement, 
                   values_vector,
-                  variable_to_index_mapping):
+                  statement):
+        return self.transformer.parse_statement(statement,
+                                                values_vector)
+    
+    ######################################################
+    ############### Methods to implement #################
+    ######################################################
+
+    def join(self, 
+             item1, 
+             item2):
+        ''' Returns the result for item1 (JOIN) item2'''
         raise NotImplementedError(
-            'transform method not implemented')
+            'Join method not implemented')
+            
+    
     
     
     

@@ -6,18 +6,22 @@ PARITY_DOMAIN_PATH = SRC_RELATIVE_PATH + 'domains/'
 PARSER_RELATIVE_PATH = SRC_RELATIVE_PATH + 'parser/'
 CFG_RELATIVE_PATH = SRC_RELATIVE_PATH + 'control_flow_graph/'
 CHAOTIC_ITERATION_RELATIVE_PATH = SRC_RELATIVE_PATH + 'chaotic_iteration/'
+GRAPH_DISPLAY_MANAGER_RELATIVE_PATH = SRC_RELATIVE_PATH + 'graph_display_manager/'
 
 sys.path.insert(1, CFG_RELATIVE_PATH)
 sys.path.insert(1, PARITY_DOMAIN_PATH)
 sys.path.insert(1, UTILS_RELATIVE_PATH)
 sys.path.insert(1, PARSER_RELATIVE_PATH)
 sys.path.insert(1, CHAOTIC_ITERATION_RELATIVE_PATH)
+sys.path.insert(1, GRAPH_DISPLAY_MANAGER_RELATIVE_PATH)
 
 import utils
 import chaotic_iteration as CI
 from parser import Parser
 from parity_domain import ParityDomain
 from control_flow_graph import ControlFlowGraph
+
+from graph_display_manager import GraphDisplayManager
 
 
 def static_analysis(program_path, 
@@ -34,8 +38,11 @@ def static_analysis(program_path,
     abstract_domain.transformer.set_variables_to_index_mapping(
         program_cfg.variable_to_index_mapping)
     
+    graph_disp_manager = GraphDisplayManager(program_cfg)
+
     CI.chaotic_iteration(abstract_domain,
-                         program_cfg)
+                         program_cfg,
+                         graph_disp_manager)
     
     utils.printMessage("Analysis finished")
 
@@ -53,7 +60,7 @@ def get_domain():
 def main():
     program_path = get_args()
     p_domain = get_domain()
-    
+
     static_analysis(program_path, 
                     p_domain)
 

@@ -39,4 +39,7 @@ TOP    = "TOP"
 
 class PARITY_CONDITION_CONSTS(StrEnum):
     even = "EVEN"
-    ODD = "ODD"
+    odd = "ODD"
+
+class SUMMATION_CONDITION_CONSTS(StrEnum):
+    summation = "SUM"
