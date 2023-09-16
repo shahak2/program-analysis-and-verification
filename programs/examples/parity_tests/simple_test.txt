@@ -4,5 +4,5 @@ L1 j := 2 L2
 L2 assert (ODD i EVEN j) L3
 L3 i := j + 1 L4
 L4 assert (ODD i) L5
-L5 j := i + 1 L2 L6
+L5 j := i + 1 L6
 L6 assert (EVEN i) L7

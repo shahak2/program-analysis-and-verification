@@ -195,6 +195,8 @@ class ControlFlowGraph:
     def get_all_nodes_value_vectors(self):
         all_vectors = dict()
         for cfg_node in self.cfg_nodes.values():
+            if self.is_exit_node(cfg_node.node_label):
+                continue
             all_vectors[cfg_node.node_label] = \
                 cfg_node.get_values_vector()
         return all_vectors

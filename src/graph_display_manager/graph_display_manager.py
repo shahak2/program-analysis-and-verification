@@ -116,6 +116,9 @@ class GraphDisplayManager():
                 font_weight='bold',
                 arrows=True)
         
+        plt.xlim((-0.15, 0.15))  
+        plt.ylim((-1.2, 1.2)) 
+
         nx.draw_networkx_nodes(nx_graph, 
                                self.nodes_positions,
                                nodelist=[snapshot.current_node_label],
@@ -129,9 +132,6 @@ class GraphDisplayManager():
                                 font_size=8, 
                                 font_color='black')
         
-        
-
-
     def is_updated_index_inside_bounds(self,
                                        direction: DIRECTION):
         if direction == DIRECTION.left:
@@ -166,8 +166,6 @@ class GraphDisplayManager():
         self.plot_current_graph()
         current_figure = plt.gcf()
         current_figure.set_size_inches(13,6)
-        current_figure.canvas.mpl_connect('key_press_event', self.on_key)
+        current_figure.canvas.mpl_connect('key_press_event', 
+                                          self.on_key)
         plt.show()
-
-
-

@@ -71,7 +71,7 @@ class SummationTransformer(BaseTransformer):
     
     
     def is_not_able_to_validate(variable_value):
-        return variable_value == TOP or variable_value == BOTTOM
+        return variable_value == BOTTOM
     
     def evaluate_condition(self, 
                            condition,
