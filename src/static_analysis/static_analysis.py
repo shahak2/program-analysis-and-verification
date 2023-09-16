@@ -20,7 +20,6 @@ import chaotic_iteration as CI
 from parser import Parser
 from parity_domain import ParityDomain
 from control_flow_graph import ControlFlowGraph
-
 from graph_display_manager import GraphDisplayManager
 
 
@@ -45,6 +44,10 @@ def static_analysis(program_path,
                          graph_disp_manager)
     
     utils.printMessage("Analysis finished")
+
+    graph_disp_manager.plot_multipartite_graph()
+    
+    
 
 
 def get_args():

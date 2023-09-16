@@ -60,7 +60,13 @@ def chaotic_iteration(abstract_domain,
         
         new_values_vector = abstract_domain.transform(joined_vector,
                                                       statement)
-            
+        
+        graph_disp_manager.save_snapshot(cfg_node_label,
+                                         program_cfg.get_all_nodes_value_vectors(),
+                                         statement,
+                                         new_values_vector)
+
+
         if is_assertion_statement(statement):
             if should_stop_program(new_values_vector):
                 utils.printError(

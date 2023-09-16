@@ -1,17 +1,21 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from collections import deque
-
+from enum import StrEnum
 from graph_snapshot import GraphSnapshot
-
 
 DEFAULT_ENTRY_NODE_LABEL = "L_entry"
 
-class GraphDisplayManager():
+class DIRECTION(StrEnum):
+    right = "right"
+    left = "left"
 
+class GraphDisplayManager():
     def __init__(self, 
                  cfg_graph):
+        self.snapshots = []
         self.graphs = []
+        self.current_graph_index = 0
 
         nodes_order, edges = self.get_edges_and_bfs_order(
             cfg_graph)
@@ -19,17 +23,25 @@ class GraphDisplayManager():
         self.nodes_order = nodes_order
         self.edges = edges
 
-
     def get_snapshot_number(self):
-        return len(self.graphs)
+        return len(self.snapshots)
 
-    def save_snapshot(self, data):
-        pass
+    def save_snapshot(self,
+                      current_node_label,
+                      all_nodes_value_vectors,
+                      statement,
+                      join_vector):
+        snapshot_number = self.get_snapshot_number()
+        snapshot = GraphSnapshot(snapshot_number,
+                                 current_node_label,
+                                 all_nodes_value_vectors,
+                                 statement,
+                                 join_vector)
+        self.snapshots.append(snapshot)
     
     def get_edges_and_bfs_order(self, 
                                 cfg_graph,
                                 entry_node_label = DEFAULT_ENTRY_NODE_LABEL):
-        
         edges_set = set()
         node_heights = {}
         visited = set()
@@ -45,110 +57,98 @@ class GraphDisplayManager():
 
             if not neighbors:
                 continue
-            not_visited_neighbors = set(neighbors) - visited
 
-            for neighbor in not_visited_neighbors:
+            for neighbor in neighbors:
                 edges_set.add((node_label, neighbor))
 
+            not_visited_neighbors = set(neighbors) - visited
             bfs_queue.extend((neighbor, height + 1) for neighbor in not_visited_neighbors)
 
-        return edges_set, node_heights
+        return node_heights, edges_set
 
+    def build_graph_from_snapshot(self,
+                                  snapshot: GraphSnapshot):
+        G = nx.DiGraph()
+        for node_label, layer in self.nodes_order.items():
+            G.add_node(node_label, layer=layer)
+            if node_label not in snapshot.all_nodes_value_vectors.keys():
+                continue
+        G.add_edges_from(self.edges)
+        return G
 
-    def plot_graphs(self):
-        pass
+    def set_nodes_and_data_positions(self, 
+                                     snapshot: GraphSnapshot):
+        temp_graph = self.build_graph_from_snapshot(
+            snapshot)
+        
+        nodes_pos = nx.multipartite_layout(temp_graph, 
+                                           subset_key="layer")
+        
+        self.nodes_positions = dict()
+        for node, coords in nodes_pos.items():
+            self.nodes_positions[node] = (-coords[1], -coords[0]) 
 
+        self.data_position = \
+            {p_key: (p_value[0]+0.05, p_value[1]) for p_key,p_value in self.nodes_positions.items()}
 
+    def plot_current_graph(self):
+        plt.clf()
+        nx_graph = self.graphs[self.current_graph_index]
+        snapshot = self.snapshots[self.current_graph_index]
 
+        nx.draw(nx_graph, 
+                self.nodes_positions, 
+                with_labels=True, 
+                node_size=800, 
+                node_color='#FFFFFF', 
+                font_size=10, 
+                font_weight='bold',
+                arrows=True)
+        
+        nx.draw_networkx_labels(nx_graph, 
+                                self.data_position, 
+                                snapshot.all_nodes_value_vectors, 
+                                font_size=8, 
+                                font_color='black')
+        
+        plt.title(f"Graph {self.current_graph_index}")
+        print(f"Graph {self.current_graph_index}")
 
+    def is_updated_index_inside_bounds(self,
+                                       direction: DIRECTION):
+        if direction == DIRECTION.left:
+            return self.current_graph_index - 1 >= 0
+        return self.current_graph_index + 1 < len(self.graphs)
 
-# Create a list of graphs
-graphs = []
+    def on_key(self, 
+               event):
+        if event.key == DIRECTION.right:
+            if not self.is_updated_index_inside_bounds(DIRECTION.right):
+                return
+            self.current_graph_index = \
+                (self.current_graph_index + 1) % len(self.graphs)
+        elif event.key == DIRECTION.left:
+            if not self.is_updated_index_inside_bounds(DIRECTION.left):
+                return
+            self.current_graph_index = \
+                (self.current_graph_index - 1) % len(self.graphs)
+        self.plot_current_graph()
+        plt.draw()
 
-# Create and add your graphs to the list
-G1 = nx.Graph()
-G1.add_edges_from([(1, 2), (2, 3), (3, 4)])
-graphs.append(G1)
+    def plot_multipartite_graph(self):
+        if len(self.snapshots) == 0:
+            return
 
-G2 = nx.Graph()
-G2.add_edges_from([(1, 2), (2, 3), (2, 4), (4, 5)])
-graphs.append(G2)
+        self.set_nodes_and_data_positions(self.snapshots[0])
 
-
-
-# Create a sample graph
-G = nx.DiGraph()
-G.add_edges_from([(1, 2), (1, 3), (2, 4), (2, 5), (3, 6)])
-
-# Perform a BFS traversal to determine node heights
-node_heights = {}
-visited = set()
-queue = deque([(1, 0)])  # Start BFS from node 1 at height 0
-
-while queue:
-    node, height = queue.popleft()
-    node_heights[node] = height
-    visited.add(node)
-    neighbors = set(G.neighbors(node)) - visited
-    queue.extend((neighbor, height + 1) for neighbor in neighbors)
-
-# Define node positions based on heights
-pos = {}
-c = 0
-for node, height in node_heights.items():
-    c +=1
-    pos[node] = (c, -height)  # Adjust horizontal position as needed
-
-# Draw the graph with specified node positions
-nx.draw(G, 
-        pos, 
-        with_labels=True, 
-        node_size=800, 
-        node_color='lightblue', 
-        font_size=10, 
-        font_weight='bold', 
-        arrows=True)
-
-plt.show()
-
-
-
-
-
-
-# Create a function to plot and navigate between graphs
-current_graph_idx = 0
-
-def plot_current_graph():
-    plt.clf()
-    G = graphs[current_graph_idx]
-    pos = nx.spring_layout(G)
-    nx.draw(G, 
-            pos, 
-            with_labels=True, 
-            node_size=800, 
-            node_color='lightblue', 
-            font_size=10, 
-            font_weight='bold')
-    plt.title(f"Graph {current_graph_idx + 1}")
-
-def on_key(event):
-    global current_graph_idx
-    if event.key == 'right':
-        current_graph_idx = (current_graph_idx + 1) % len(graphs)
-    elif event.key == 'left':
-        current_graph_idx = (current_graph_idx - 1) % len(graphs)
-    plot_current_graph()
-    plt.draw()
-
-# Create the initial plot and connect it to the key press event handler
-plot_current_graph()
-fig = plt.gcf()
-fig.canvas.mpl_connect('key_press_event', on_key)
-plt.show()
-
-
-
+        for snapshot in self.snapshots:
+            nx_graph = self.build_graph_from_snapshot(snapshot)
+            self.graphs.append(nx_graph)
+        
+        self.plot_current_graph()
+        current_figure = plt.gcf()
+        current_figure.canvas.mpl_connect('key_press_event', self.on_key)
+        plt.show()
 
 
 

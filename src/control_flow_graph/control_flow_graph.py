@@ -22,7 +22,7 @@ class ControlFlowGraph:
             - variable_to_index_mapping
             - index_to_variable_mapping
             - number_of_variables
-            - cfg_nodes:                    A dictonary of CfgNodes
+            - cfg_nodes:                    A dictionary of CfgNodes
             - domain_bottom                 The value given for all nodes but the entry node
             - exit_labels_set
     """
@@ -191,3 +191,10 @@ class ControlFlowGraph:
             all_incoming_vectors.append(
                 incoming_node.get_values_vector())
         return all_incoming_vectors
+    
+    def get_all_nodes_value_vectors(self):
+        all_vectors = dict()
+        for cfg_node in self.cfg_nodes.values():
+            all_vectors[cfg_node.node_label] = \
+                cfg_node.get_values_vector()
+        return all_vectors
