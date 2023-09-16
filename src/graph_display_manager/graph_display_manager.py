@@ -23,17 +23,12 @@ class GraphDisplayManager():
         self.nodes_order = nodes_order
         self.edges = edges
 
-    def get_snapshot_number(self):
-        return len(self.snapshots)
-
     def save_snapshot(self,
                       current_node_label,
                       all_nodes_value_vectors,
                       statement,
                       join_vector):
-        snapshot_number = self.get_snapshot_number()
-        snapshot = GraphSnapshot(snapshot_number,
-                                 current_node_label,
+        snapshot = GraphSnapshot(current_node_label,
                                  all_nodes_value_vectors,
                                  statement,
                                  join_vector)
@@ -89,21 +84,36 @@ class GraphDisplayManager():
             self.nodes_positions[node] = (-coords[1], -coords[0]) 
 
         self.data_position = \
-            {p_key: (p_value[0]+0.05, p_value[1]) for p_key,p_value in self.nodes_positions.items()}
+            {p_key: (p_value[0], p_value[1]-0.1) for p_key,p_value in self.nodes_positions.items()}
 
     def plot_current_graph(self):
         plt.clf()
         nx_graph = self.graphs[self.current_graph_index]
         snapshot = self.snapshots[self.current_graph_index]
 
+        plt.title(f"Iteration {self.current_graph_index}")
+
+        plt.text(-0.15, 
+                 1.1, 
+                 f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}", 
+                 fontsize=10, 
+                 color='blue')
+
         nx.draw(nx_graph, 
-                self.nodes_positions, 
+                self.nodes_positions,
                 with_labels=True, 
-                node_size=800, 
-                node_color='#FFFFFF', 
+                node_size=700, 
+                node_color='#FFFFFF',
                 font_size=10, 
                 font_weight='bold',
                 arrows=True)
+        
+        nx.draw_networkx_nodes(nx_graph, 
+                               self.nodes_positions,
+                               nodelist=[snapshot.current_node_label],
+                               node_shape='s',
+                               node_size=600,
+                               node_color='#88f7a6')
         
         nx.draw_networkx_labels(nx_graph, 
                                 self.data_position, 
@@ -111,8 +121,8 @@ class GraphDisplayManager():
                                 font_size=8, 
                                 font_color='black')
         
-        plt.title(f"Graph {self.current_graph_index}")
-        print(f"Graph {self.current_graph_index}")
+        
+
 
     def is_updated_index_inside_bounds(self,
                                        direction: DIRECTION):
@@ -147,6 +157,7 @@ class GraphDisplayManager():
         
         self.plot_current_graph()
         current_figure = plt.gcf()
+        current_figure.set_size_inches(13,6)
         current_figure.canvas.mpl_connect('key_press_event', self.on_key)
         plt.show()
 
