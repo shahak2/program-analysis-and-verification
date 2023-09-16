@@ -22,3 +22,6 @@ class WorkingList():
     def insert_elements(self, elements):
         for element in elements:
             self.insert_element(element)
+
+    def get_snapshot(self):
+        return self.elements.copy()

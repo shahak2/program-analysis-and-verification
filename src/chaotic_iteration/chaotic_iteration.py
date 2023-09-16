@@ -64,7 +64,8 @@ def chaotic_iteration(abstract_domain,
         graph_disp_manager.save_snapshot(cfg_node_label,
                                          program_cfg.get_all_nodes_value_vectors(),
                                          statement,
-                                         new_values_vector)
+                                         new_values_vector,
+                                         working_list.get_snapshot())
 
 
         if is_assertion_statement(statement):

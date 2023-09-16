@@ -27,11 +27,13 @@ class GraphDisplayManager():
                       current_node_label,
                       all_nodes_value_vectors,
                       statement,
-                      join_vector):
+                      join_vector,
+                      working_list):
         snapshot = GraphSnapshot(current_node_label,
                                  all_nodes_value_vectors,
                                  statement,
-                                 join_vector)
+                                 join_vector,
+                                 working_list)
         self.snapshots.append(snapshot)
     
     def get_edges_and_bfs_order(self, 
@@ -91,7 +93,7 @@ class GraphDisplayManager():
         nx_graph = self.graphs[self.current_graph_index]
         snapshot = self.snapshots[self.current_graph_index]
 
-        plt.title(f"Iteration {self.current_graph_index}")
+        plt.title(f"Chaotic Iteration {self.current_graph_index}")
 
         plt.text(-0.15, 
                  1.1, 
@@ -99,6 +101,12 @@ class GraphDisplayManager():
                  fontsize=10, 
                  color='blue')
 
+        plt.text(-0.15, 
+                 0.9, 
+                 f"Working List: {snapshot.working_list}", 
+                 fontsize=10, 
+                 color='blue')
+        
         nx.draw(nx_graph, 
                 self.nodes_positions,
                 with_labels=True, 
