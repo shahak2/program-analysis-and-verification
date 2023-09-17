@@ -20,8 +20,6 @@ class SummationTransformer(BaseTransformer):
         return BOTTOM
         
     
-
-    
     ##########################################
     ##########################################
     ################## HERE ##################
@@ -31,28 +29,17 @@ class SummationTransformer(BaseTransformer):
     def evaluate_variable(self,
                           variable,
                           values_vector):
-        self.check_valid_variable(variable)
-        return self.get_variable_domain_value(variable, 
-                                              values_vector)
+        pass
     
     def evaluate_expression_by_operator(self, 
                                         value1,
                                         value2,
                                         operation):
-        # There are mathematical "tricks" here.
-        # Implementation of "value1 +- value2" in Parity Domain.
-        if value1 == BOTTOM or value2 == BOTTOM:
-            return BOTTOM
-        if value1 == TOP or value2 == TOP:
-            return TOP
-        if value1 == value2:
-            return EVEN
-        return ODD
+        pass
     
     def evaluate_booleans(self, 
                           and_conditions_string,
                           values_vector):
-        
         conditions_list = \
             split_string_by_keywords(and_conditions_string,
                                      BOOLEANS_KEYWORDS)
