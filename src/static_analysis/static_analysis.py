@@ -1,4 +1,5 @@
 import sys
+from enum import StrEnum
 
 SRC_RELATIVE_PATH = "src/"
 UTILS_RELATIVE_PATH = 'utils/'
@@ -19,8 +20,22 @@ import utils
 import chaotic_iteration as CI
 from parser import Parser
 from parity_domain import ParityDomain
+from summation_domain import SummationDomain
+from combined_domain import CombinedDomain
 from control_flow_graph import ControlFlowGraph
 from graph_display_manager import GraphDisplayManager
+
+class ABSTRACT_DOMAINS(StrEnum):
+    parity = "parity"
+    summation = "summation"
+    combined = "combined"
+
+def set_domain(abstract_domain):
+    if abstract_domain == ABSTRACT_DOMAINS.parity:
+        return ParityDomain()
+    elif abstract_domain == ABSTRACT_DOMAINS.summation:
+        return SummationDomain()
+    return CombinedDomain()
 
 
 def static_analysis(program_path, 
@@ -28,18 +43,21 @@ def static_analysis(program_path,
     utils.printMessage("Running static analysis...")
     parsed_program = Parser(program_path)
     
-    default_entry_node_value = abstract_domain.TOP
+    domain = set_domain(abstract_domain)
+
+    default_entry_node_value = domain.TOP
+    
     
     program_cfg = ControlFlowGraph(parsed_program.program,
                                    parsed_program.variables,
                                    default_entry_node_value)
     
-    abstract_domain.transformer.set_variables_to_index_mapping(
+    domain.transformer.set_variables_to_index_mapping(
         program_cfg.variable_to_index_mapping)
     
     graph_disp_manager = GraphDisplayManager(program_cfg)
 
-    CI.chaotic_iteration(abstract_domain,
+    CI.chaotic_iteration(domain,
                          program_cfg,
                          graph_disp_manager)
     
@@ -49,24 +67,3 @@ def static_analysis(program_path,
     
     
 
-
-def get_args():
-    # TODO: Implement from args
-    TESTER_PROGRAM_PATH = "programs/examples/parity_example.txt"
-    # TESTER_PROGRAM_PATH = "programs/examples/parity_tests/simple_test.txt"
-    return TESTER_PROGRAM_PATH
-    
-def get_domain():
-    # TODO: Implement from args
-    return ParityDomain()
-
-def main():
-    program_path = get_args()
-    p_domain = get_domain()
-
-    static_analysis(program_path, 
-                    p_domain)
-
-if __name__ == "__main__":
-    main()
-    

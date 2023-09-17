@@ -88,6 +88,30 @@ class GraphDisplayManager():
         self.data_position = \
             {p_key: (p_value[0], p_value[1]-0.1) for p_key,p_value in self.nodes_positions.items()}
 
+
+
+    def get_limits(self):
+
+        all_positions = list(self.nodes_positions.values()) + \
+            list(self.data_position.values())
+
+
+        epsilon = 0.05
+
+        min_y = min(all_positions, key = lambda y: y[1])
+        max_y = max(all_positions, key = lambda y: y[1])
+        y_limits = (min_y[1] - epsilon, max_y[1] + epsilon)
+
+        min_x = min(all_positions, key = lambda x: x[0])
+        max_x = max(all_positions, key = lambda x: x[0])
+        x_limits = (min_x[0] - epsilon, max_x[0] + epsilon)
+
+        return (x_limits, y_limits)
+
+
+
+
+
     def plot_current_graph(self):
         plt.clf()
         nx_graph = self.graphs[self.current_graph_index]
@@ -116,8 +140,13 @@ class GraphDisplayManager():
                 font_weight='bold',
                 arrows=True)
         
+
         plt.xlim((-0.15, 0.15))  
         plt.ylim((-1.2, 1.2)) 
+
+        # limits = self.get_limits()
+        # plt.xlim(limits[0])  
+        # plt.ylim(limits[1]) 
 
         nx.draw_networkx_nodes(nx_graph, 
                                self.nodes_positions,
@@ -126,11 +155,11 @@ class GraphDisplayManager():
                                node_size=600,
                                node_color='#88f7a6')
         
-        nx.draw_networkx_labels(nx_graph, 
-                                self.data_position, 
-                                snapshot.all_nodes_value_vectors, 
-                                font_size=8, 
-                                font_color='black')
+        # nx.draw_networkx_labels(nx_graph, 
+        #                         self.data_position, 
+        #                         snapshot.all_nodes_value_vectors, 
+        #                         font_size=8, 
+        #                         font_color='black')
         
     def is_updated_index_inside_bounds(self,
                                        direction: DIRECTION):
