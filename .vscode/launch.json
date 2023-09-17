@@ -23,15 +23,6 @@
             "justMyCode": true
         },
         {
-            "name": "Run Static Analysis",
-            "cwd": "${workspaceFolder}",
-            "type": "python",
-            "request": "launch",
-            "program": "src/static_analysis/static_analysis.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
             "name": "Transformers Tests",
             "cwd": "${workspaceFolder}",
             "type": "python",
