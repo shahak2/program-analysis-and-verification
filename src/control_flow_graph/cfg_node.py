@@ -4,7 +4,6 @@ class CfgNode():
                  statement,
                  values_vector,
                  out_labels = set()):
-        
         self.node_label = node_label
         self.statement = statement
         self.out_labels = out_labels

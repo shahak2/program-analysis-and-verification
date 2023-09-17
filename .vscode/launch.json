@@ -39,6 +39,19 @@
             "program": "tests/transformers/transformers_tests.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "paav test",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "paav.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [ 
+                "-t" 
+            ]
         }
+
     ]
 }

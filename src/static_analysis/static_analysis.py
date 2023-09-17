@@ -37,16 +37,15 @@ def set_domain(abstract_domain):
         return SummationDomain()
     return CombinedDomain()
 
-
 def static_analysis(program_path, 
-                    abstract_domain):
+                    abstract_domain,
+                    plot_graph_flag = False):
     utils.printMessage("Running static analysis...")
     parsed_program = Parser(program_path)
     
     domain = set_domain(abstract_domain)
 
     default_entry_node_value = domain.TOP
-    
     
     program_cfg = ControlFlowGraph(parsed_program.program,
                                    parsed_program.variables,
@@ -63,7 +62,8 @@ def static_analysis(program_path,
     
     utils.printMessage("Analysis finished")
 
-    graph_disp_manager.plot_multipartite_graph()
+    if plot_graph_flag:
+        graph_disp_manager.plot_multipartite_graph()
     
     
 

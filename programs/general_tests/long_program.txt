@@ -6,10 +6,10 @@ L3 e := 4 L4
 L4 f := 5 L5
 L5 g := e + 1 L6
 L6 assume(f = g) L7
-L6 assume(f != g) L14
+L6 assume(f != g) L12
 L7 a := 1 L8
 L8 b := 1 L9
-L10 assume(a = b) L11
-L10 assume(a != b) L14
-L11 e := 3 L12
-L12 assert (ODD e) L13
+L9 assume(a = b) L10
+L9 assume(a != b) L12
+L10 e := 3 L11
+L11 assert (ODD e) L12

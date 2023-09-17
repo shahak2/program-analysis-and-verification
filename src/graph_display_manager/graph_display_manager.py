@@ -17,8 +17,7 @@ class GraphDisplayManager():
         self.graphs = []
         self.current_graph_index = 0
 
-        nodes_order, edges = self.get_edges_and_bfs_order(
-            cfg_graph)
+        nodes_order, edges = self.get_edges_and_bfs_order(cfg_graph)
 
         self.nodes_order = nodes_order
         self.edges = edges
@@ -85,68 +84,76 @@ class GraphDisplayManager():
         for node, coords in nodes_pos.items():
             self.nodes_positions[node] = (-coords[1], -coords[0]) 
 
+        boundries_values = self.get_limits_and_epsilons()
+        epsilons = boundries_values["epsilons"]
+        epsilons_x = epsilons[0]
+        epsilons_y = epsilons[1]
+        
         self.data_position = \
-            {p_key: (p_value[0], p_value[1]-0.1) for p_key,p_value in self.nodes_positions.items()}
+            {p_key: (p_value[0], p_value[1] + 0.5 * epsilons_y) for p_key,p_value in self.nodes_positions.items()}
 
-
-
-    def get_limits(self):
-
-        all_positions = list(self.nodes_positions.values()) + \
-            list(self.data_position.values())
-
-
-        epsilon = 0.05
+    def get_limits_and_epsilons(self):
+        all_positions = list(self.nodes_positions.values())
 
         min_y = min(all_positions, key = lambda y: y[1])
         max_y = max(all_positions, key = lambda y: y[1])
-        y_limits = (min_y[1] - epsilon, max_y[1] + epsilon)
-
+        y_epsilon = (max_y[1] - min_y[1]) / 20
+        
         min_x = min(all_positions, key = lambda x: x[0])
         max_x = max(all_positions, key = lambda x: x[0])
-        x_limits = (min_x[0] - epsilon, max_x[0] + epsilon)
+        x_epsilon = (max_x[0] - min_x[0]) / 20
+        
+        if x_epsilon == 0:
+            x_epsilon = 0.05
+        
+        y_limits = (min_y[1] - 1 * y_epsilon, max_y[1] + 1 * y_epsilon)
+        x_limits = (min_x[0] - 1 * x_epsilon, max_x[0] + 1 * x_epsilon)
+        
+        limits = (x_limits, y_limits)
+        epsilons = (x_epsilon, y_epsilon)
 
-        return (x_limits, y_limits)
-
-
-
-
+        return {
+            "limits": limits, 
+            "epsilons": epsilons
+        }
 
     def plot_current_graph(self):
         plt.clf()
         nx_graph = self.graphs[self.current_graph_index]
         snapshot = self.snapshots[self.current_graph_index]
 
-        plt.title(f"Chaotic Iteration {self.current_graph_index}")
+        plt.title(f"Chaotic Iteration {self.current_graph_index + 1}")
 
-        plt.text(-0.15, 
-                 1.1, 
+        boundries_values = self.get_limits_and_epsilons()
+        limits = boundries_values["limits"]
+        epsilons = boundries_values["epsilons"]
+        limx = limits[0]
+        limy = limits[1]
+        epsilons_y = epsilons[1]
+        
+        plt.text(limx[0], 
+                 limy[1] - epsilons_y, 
                  f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}", 
-                 fontsize=10, 
+                 fontsize=6, 
                  color='blue')
 
-        plt.text(-0.15, 
-                 0.9, 
+        plt.text(limx[0], 
+                 limy[1] - 2 * epsilons_y, 
                  f"Working List: {snapshot.working_list}", 
-                 fontsize=10, 
+                 fontsize=6, 
                  color='blue')
         
         nx.draw(nx_graph, 
                 self.nodes_positions,
                 with_labels=True, 
-                node_size=700, 
+                node_size=600, 
                 node_color='#FFFFFF',
-                font_size=10, 
+                font_size=8, 
                 font_weight='bold',
                 arrows=True)
         
-
-        plt.xlim((-0.15, 0.15))  
-        plt.ylim((-1.2, 1.2)) 
-
-        # limits = self.get_limits()
-        # plt.xlim(limits[0])  
-        # plt.ylim(limits[1]) 
+        plt.xlim(limx)  
+        plt.ylim(limy) 
 
         nx.draw_networkx_nodes(nx_graph, 
                                self.nodes_positions,
@@ -155,11 +162,11 @@ class GraphDisplayManager():
                                node_size=600,
                                node_color='#88f7a6')
         
-        # nx.draw_networkx_labels(nx_graph, 
-        #                         self.data_position, 
-        #                         snapshot.all_nodes_value_vectors, 
-        #                         font_size=8, 
-        #                         font_color='black')
+        nx.draw_networkx_labels(nx_graph, 
+                                self.data_position, 
+                                snapshot.all_nodes_value_vectors, 
+                                font_size=5, 
+                                font_color='black')
         
     def is_updated_index_inside_bounds(self,
                                        direction: DIRECTION):
