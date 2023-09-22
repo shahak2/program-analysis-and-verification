@@ -21,6 +21,7 @@ class GraphDisplayManager():
 
         self.nodes_order = nodes_order
         self.edges = edges
+        self.statements = cfg_graph.get_all_statements()
 
     def save_snapshot(self,
                       current_node_label,
@@ -115,8 +116,6 @@ class GraphDisplayManager():
             "epsilons": epsilons
         }
 
-    
-    
     def plot_current_graph(self):
         plt.clf()
         nx_graph = self.graphs[self.current_graph_index]
@@ -145,24 +144,16 @@ class GraphDisplayManager():
                  color='blue')
         # ============================================
         
-        ################################# TODO  ###############################
-        #
-        # Use this template to fix labels so they show statements as well - 
-        # need to add statements to snapshot
-        #
-        # d = {k: f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}" for k,v in self.nodes_positions.items()}
-        # nx.draw(nx_graph, 
-        #         self.nodes_positions,
-        #         with_labels=True, 
-        #         node_size=600, 
-        #         node_color='#FFFFFF',
-        #         font_size=8, 
-        #         font_weight='bold',
-        #         arrows=True,
-        #         labels=d)
-        #
-        #######################################################################
-        
+        labels = dict()
+        for node_label, node_pos in self.nodes_positions.items():
+            if node_label not in self.statements.keys():
+                statement = "EXIT"
+                vector = ""
+            else:
+                statement = self.statements[node_label]
+                vector = snapshot.all_nodes_value_vectors[node_label]
+            labels[node_label] = f"{node_label:2}: [{statement:6}]# {vector}"
+            
         nx.draw(nx_graph, 
                 self.nodes_positions,
                 with_labels=True, 
@@ -170,7 +161,10 @@ class GraphDisplayManager():
                 node_color='#FFFFFF',
                 font_size=8, 
                 font_weight='bold',
-                arrows=True)
+                arrows=True,
+                labels=labels)
+
+        #######################################################################
         
         plt.xlim(limx)  
         plt.ylim(limy) 
@@ -182,12 +176,6 @@ class GraphDisplayManager():
                                node_shape='s',
                                node_size=600,
                                node_color='#88f7a6')
-        
-        nx.draw_networkx_labels(nx_graph, 
-                                self.data_position, 
-                                snapshot.all_nodes_value_vectors, 
-                                font_size=5, 
-                                font_color='black')
         
     def is_updated_index_inside_bounds(self,
                                        direction: DIRECTION):

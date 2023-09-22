@@ -67,3 +67,30 @@ class SummationDomain(base_domain.BaseDomain):
         low = item2.low if item1.low == (-math.inf) else item1.low
         high = item2.high if item1.high == math.inf else item1.high
         return SummationElement(low, high)
+    
+    
+    def vectors_widen_from_list(self, 
+                               vectors_list):
+            number_of_vectors = len(vectors_list)
+            result_vector = vectors_list[0].copy()
+            vectors_length = len(result_vector)
+            
+            for vector_number in range(1, number_of_vectors):
+                
+                result_vector = self.vector_widen(result_vector, 
+                                                  vectors_list[vector_number])
+            
+            return result_vector
+        
+    def vector_widen(self, 
+                    values_vector1,
+                    values_vector2):
+            assert len(values_vector1) == len(values_vector1), \
+                "Cannot perform widen on vectors with different length!"
+            
+            vector_length = len(values_vector1)
+            result_vector = [None for i in range(0, vector_length)]
+            for i in range(0, vector_length):
+                result_vector[i] = self.widen(values_vector1[i],
+                                              values_vector2[i])
+            return result_vector

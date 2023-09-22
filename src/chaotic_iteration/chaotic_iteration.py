@@ -24,7 +24,8 @@ def print_status(current_cfg_node,
 
 def chaotic_iteration(abstract_domain,
                       program_cfg,
-                      graph_disp_manager):
+                      graph_disp_manager,
+                      use_widen_flag = True):
     
     cfg_nodes_labels = program_cfg.get_all_cfg_nodes_labels()
     working_list_ignore_insert_set = program_cfg.exit_labels_set.copy()
@@ -50,8 +51,12 @@ def chaotic_iteration(abstract_domain,
             all_incoming_vectors = \
                 program_cfg.get_incoming_nodes_values_vectors_by_node_label(
                     cfg_node_label)
-            joined_vector = \
-                abstract_domain.vectors_join_from_list(all_incoming_vectors)
+            if use_widen_flag and program_cfg.is_loop_node(cfg_node_label):
+                joined_vector = \
+                    abstract_domain.vectors_widen_from_list(all_incoming_vectors)
+            else:
+                joined_vector = \
+                    abstract_domain.vectors_join_from_list(all_incoming_vectors)
         
         print_status(current_cfg_node,
                      joined_vector, 
@@ -66,7 +71,6 @@ def chaotic_iteration(abstract_domain,
                                          statement,
                                          new_values_vector,
                                          working_list.get_snapshot())
-
 
         if is_assertion_statement(statement):
             if should_stop_program(new_values_vector):

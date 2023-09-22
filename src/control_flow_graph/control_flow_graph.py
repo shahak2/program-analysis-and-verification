@@ -45,6 +45,7 @@ class ControlFlowGraph:
         self.build_graph()
         self.init_exit_nodes_labels()
         self.add_in_labels_to_all_nodes()
+        self.loop_nodes = self.find_loop_headers_and_nodes()
         
     def build_graph(self):
         for line_number, line_info in self.program_lines.items():
@@ -79,6 +80,9 @@ class ControlFlowGraph:
                 
     def is_exit_node(self, node_label):
         return node_label in self.exit_labels_set
+    
+    def is_loop_node(self, node_label):
+        return node_label in self.loop_nodes
     
     def init_cfg_nodes(self, 
                        default_entry_node_value):
@@ -165,7 +169,6 @@ class ControlFlowGraph:
             return None
         return cfg_node.get_out_labels()
 
-
     def get_incoming_cfg_nodes_by_node(self, 
                                        cfg_node: CfgNode):
         in_cfg_nodes = []
@@ -200,3 +203,57 @@ class ControlFlowGraph:
             all_vectors[cfg_node.node_label] = \
                 cfg_node.get_values_vector()
         return all_vectors
+    
+    def get_all_statements(self):
+        all_statements = dict()
+        for cfg_node in self.cfg_nodes.values():
+            if self.is_exit_node(cfg_node.node_label):
+                all_statements[cfg_node.node_label] = "EXIT"
+                continue
+            all_statements[cfg_node.node_label] = \
+                cfg_node.statement
+        return all_statements
+    
+    def get_all_loop_nodes_labels(self):
+        all_loop_nodes_labels = []
+        for cfg_node in self.cfg_nodes.values():
+            if cfg_node.is_condition_node():
+                all_statements[cfg_node.node_label] = \
+                    cfg_node.statement
+        return all_loop_nodes_labels
+    
+    def dfs(self,
+            node_label, 
+            visited, 
+            stack, 
+            loop_nodes,
+            loop_headers):
+            visited.add(node_label)
+            stack.append(node_label)
+            
+            cfg_node = self.get_cfg_node_by_label(node_label)
+            if cfg_node != None:
+                children = cfg_node.get_out_labels()
+                for child in children:
+                    if child not in visited:
+                        self.dfs(child, visited, stack, loop_nodes, loop_headers)
+                    elif child in stack:
+                        # Back edge detected, indicating a loop
+                        loop_nodes.add(child)
+                        if child not in loop_headers:
+                            # Add the loop header
+                            loop_headers.add(child)
+            stack.pop()
+            
+    def find_loop_headers_and_nodes(self):
+        loop_nodes = set()
+        loop_headers = set()
+        visited = set()
+        stack = []
+        
+        for node_label in self.cfg_nodes.keys():
+            if node_label not in visited:
+                self.dfs(node_label, visited, stack, loop_nodes, loop_headers)
+        
+        return loop_headers
+        

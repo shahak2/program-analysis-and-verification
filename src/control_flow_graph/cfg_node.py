@@ -29,3 +29,7 @@ class CfgNode():
     
     def is_entry_node(self):
         return len(self.in_labels) == 0
+    
+    def is_condition_node(self):
+        ASSUME_COMMAND = "assume("
+        return ASSUME_COMMAND in self.get_statement()

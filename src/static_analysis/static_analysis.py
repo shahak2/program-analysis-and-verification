@@ -39,7 +39,8 @@ def set_domain(abstract_domain):
 
 def static_analysis(program_path, 
                     abstract_domain,
-                    plot_graph_flag = False):
+                    plot_graph_flag = False,
+                    use_widen_flag = False):
     utils.printMessage("Running static analysis...")
     parsed_program = Parser(program_path)
     
