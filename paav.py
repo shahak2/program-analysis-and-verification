@@ -11,16 +11,36 @@ import utils
 from program_consts import *
 from static_analysis import *
 
-def run_sanity_test():
+
+### more paths
+# program_path = "programs/examples/parity_tests/simple_test.txt"
+# program_path = "programs/general_tests/long_program.txt"
+
+
+def run_parity_sanity_test():
     abstract_domain = ABSTRACT_DOMAINS.parity
     program_path = "programs/examples/parity_example.txt"
-    # program_path = "programs/examples/parity_tests/simple_test.txt"
-    # program_path = "programs/general_tests/long_program.txt"
-
     plot_graph_flag = True
     static_analysis(program_path, 
                     abstract_domain,
                     plot_graph_flag)
+
+
+def run_summation_sanity_test():
+    abstract_domain = ABSTRACT_DOMAINS.summation
+    # program_path = "programs/examples/summation_example.txt"
+    program_path = "programs/examples/summation_tests/simple_test.txt"
+    
+    plot_graph_flag = True
+    static_analysis(program_path, 
+                    abstract_domain,
+                    plot_graph_flag)
+    
+def run_sanity_test():
+    # run_parity_sanity_test()
+    run_summation_sanity_test()
+
+
 
 def run_tests():
     utils.printMessage("Running Sanity Test")

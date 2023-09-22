@@ -6,11 +6,9 @@ DOMAINS_PATH = SRC_RELATIVE_PATH + 'domains/'
 
 sys.path.insert(1, DOMAINS_PATH)
 
-from summation_domain import SummationDomain, SummationElement
+from summation_element import SummationElement
 
-TOP = SummationElement(-math.inf, math.inf)
 BOTTOM = "BOTTOM"
-TOP = "TOP"
 
 # (element1, element2, expected_result)
 SUMMATION_JOIN_RELATIONS = [

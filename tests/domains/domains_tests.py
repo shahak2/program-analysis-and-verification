@@ -82,7 +82,6 @@ def parity_domain_tester():
 
 def summation_domain_tester():
     utils.printMessage("Summation Domain Tests")
-    
     try:
         s_domain = SummationDomain()
         
@@ -113,22 +112,18 @@ def summation_domain_tester():
             res = s_domain.narrow(relation[0], relation[1])
             assert res == relation[2], \
                 f"Invalid Result {res} = {relation[2]}"
-                
-                
     except Exception as e:
         utils.printError(f'{e}')
         return
     utils.printSuccess("All tests Passed!")
 
-
-    
 def combined_domain_tester():
     # TODO: Implement
     utils.printError(
         f'combined_domain_tester not Implemented')
 
 def run_tests():
-    # parity_domain_tester()
+    parity_domain_tester()
     summation_domain_tester()
     combined_domain_tester()
 

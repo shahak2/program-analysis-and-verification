@@ -143,10 +143,25 @@ class GraphDisplayManager():
                  f"Working List: {snapshot.working_list}", 
                  fontsize=6, 
                  color='blue')
-        ###
+        # ============================================
         
-        
-        d = {k: f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}" for k,v in self.nodes_positions.items()}
+        ################################# TODO  ###############################
+        #
+        # Use this template to fix labels so they show statements as well - 
+        # need to add statements to snapshot
+        #
+        # d = {k: f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}" for k,v in self.nodes_positions.items()}
+        # nx.draw(nx_graph, 
+        #         self.nodes_positions,
+        #         with_labels=True, 
+        #         node_size=600, 
+        #         node_color='#FFFFFF',
+        #         font_size=8, 
+        #         font_weight='bold',
+        #         arrows=True,
+        #         labels=d)
+        #
+        #######################################################################
         
         nx.draw(nx_graph, 
                 self.nodes_positions,
@@ -155,8 +170,7 @@ class GraphDisplayManager():
                 node_color='#FFFFFF',
                 font_size=8, 
                 font_weight='bold',
-                arrows=True,
-                labels=d)
+                arrows=True)
         
         plt.xlim(limx)  
         plt.ylim(limy) 

@@ -1,7 +1,16 @@
+import sys
 from enum import StrEnum
 
+import math
 
-### Parity Testing
+SRC_RELATIVE_PATH = "src/"
+DOMAINS_PATH = SRC_RELATIVE_PATH + 'domains/'
+
+sys.path.insert(1, DOMAINS_PATH)
+
+from summation_element import SummationElement
+
+#################### Parity Testing ####################
 
 # Parity consts
 TOP = "TOP"
@@ -14,11 +23,7 @@ CANNOT_VALIDATE = "Cannot validate"
     PARITY_TESTS: A tuple of (values_vector, statement, expected_result_vector)
 """
 
-PARITY_MOCK_VARIABLES = {
-    "i": 0, 
-    "n": 1, 
-    "j": 2
-}
+PARITY_MOCK_VARIABLES = {"i": 0, "n": 1, "j": 2}
 
 PARITY_TESTS = [
     # Assignments
@@ -68,8 +73,44 @@ PARITY_TESTS_LONG = [
 ]
 
 
+#################### Summation Testing ####################
 
+SUMMATION_MOCK_VARIABLES = {"a": 0,  "b": 1,  "c": 2}
 
+SUMMATION_TOP = SummationElement(-math.inf, math.inf)
 
-
-
+SUMMATION_TESTS = [
+    # Assignments
+    ([SUMMATION_TOP, BOTTOM, BOTTOM],               "entry",       [SUMMATION_TOP,              BOTTOM,                     BOTTOM]                     ),
+    ([SUMMATION_TOP, BOTTOM, BOTTOM],               "skip",        [SUMMATION_TOP,              BOTTOM,                     BOTTOM]                     ),
+    ([SUMMATION_TOP, BOTTOM, BOTTOM],               "c := ?",      [SUMMATION_TOP,              BOTTOM,                     BOTTOM]                     ),
+    ([SUMMATION_TOP, BOTTOM, BOTTOM],               "c := 378",    [SUMMATION_TOP,              BOTTOM,                     SummationElement(378, 378)] ),
+    ([BOTTOM, SUMMATION_TOP, BOTTOM],               "a := b",      [SUMMATION_TOP,              SUMMATION_TOP,              BOTTOM]                     ),
+    ([BOTTOM, SUMMATION_TOP, BOTTOM],               "a := b + 1",  [SUMMATION_TOP,              SUMMATION_TOP,              BOTTOM]                     ),
+    ([BOTTOM, SummationElement(-3, 5), BOTTOM],     "a := b + 1",  [SummationElement(-2, 6),    SummationElement(-3, 5),    BOTTOM]                     ),
+    ([BOTTOM, SummationElement(-3, 5), BOTTOM],     "a := b - 1",  [SummationElement(-4, 4),    SummationElement(-3, 5),    BOTTOM]                     ),
+    ([BOTTOM, SUMMATION_TOP, BOTTOM],               "a := b - 1",  [SUMMATION_TOP,              SUMMATION_TOP,              BOTTOM]                     ),
+    ([BOTTOM, BOTTOM,   SUMMATION_TOP],             "a := c - 1",  [SUMMATION_TOP,              BOTTOM,                     SUMMATION_TOP]              ),
+    
+    # Assumptions
+    ([SUMMATION_TOP,            BOTTOM,             BOTTOM],                    "assume",          [SUMMATION_TOP,              BOTTOM,             BOTTOM]                 ),
+    ([SUMMATION_TOP,            SUMMATION_TOP,      BOTTOM],                    "assume(a = b)",   [SUMMATION_TOP,              SUMMATION_TOP,      BOTTOM]                 ), # good: vars are equal
+    ([SUMMATION_TOP,            BOTTOM,             SummationElement(-3, 5)],   "assume(a = b)",   [BOTTOM,                     BOTTOM,             BOTTOM]                 ), # bad: vars are not equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-3, 5),    SUMMATION_TOP,      SummationElement(-2, 5)]), # good: vars are not equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(a != c)",  [BOTTOM,                     BOTTOM,             BOTTOM]                 ), # bad: vars are equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(TRUE)",    [SummationElement(-3, 5),    SUMMATION_TOP,      SummationElement(-3, 5)]),
+    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(FALSE)",   [BOTTOM,                     BOTTOM,             BOTTOM]                 ),
+    
+    # Assertions
+    ([BOTTOM,                                BOTTOM,                                 BOTTOM                 ], "assert (SUM a b = SUM b c)",    CANNOT_VALIDATE ),
+    ([SummationElement(-3, 5),               SummationElement(-3, 5),                SummationElement(-3, 5)], "assert (SUM a b = SUM b c)",    True            ),
+    ([SummationElement(-2, 5),               SummationElement(-3, 5),                SummationElement(-3, 5)], "assert (SUM a b = SUM b c)",    False           ),
+    ([SummationElement(-2, 5),               SummationElement(-2, 5),                SummationElement(-3, 5)], "assert (SUM a = SUM b)",        True            ),
+    ([SummationElement(-2, 1),               SummationElement(-4, 2),                SummationElement(-3, 5)], "assert (SUM a a = SUM b)",      True            ),
+    ([SummationElement(-math.inf, 1),        SummationElement(-math.inf, 1),         SummationElement(-3, 5)], "assert (SUM a = SUM b)",        True            ),
+    ([SummationElement(-math.inf, math.inf), SummationElement(-math.inf, 1),         SummationElement(-3, 5)], "assert (SUM a = SUM b)",        False           ),
+    ([SummationElement(-math.inf, math.inf), SummationElement(-math.inf, math.inf),  SummationElement(-3, 5)], "assert (SUM a = SUM b)",        True            ),
+    ([SummationElement(-math.inf, 1),        SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        True            ),
+    ([SummationElement(-math.inf, 1),        BOTTOM,                                 BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
+    ([BOTTOM,                                SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
+]
