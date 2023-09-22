@@ -67,8 +67,6 @@ class GraphDisplayManager():
         G = nx.DiGraph()
         for node_label, layer in self.nodes_order.items():
             G.add_node(node_label, layer=layer)
-            if node_label not in snapshot.all_nodes_value_vectors.keys():
-                continue
         G.add_edges_from(self.edges)
         return G
 
@@ -117,6 +115,8 @@ class GraphDisplayManager():
             "epsilons": epsilons
         }
 
+    
+    
     def plot_current_graph(self):
         plt.clf()
         nx_graph = self.graphs[self.current_graph_index]
@@ -131,6 +131,7 @@ class GraphDisplayManager():
         limy = limits[1]
         epsilons_y = epsilons[1]
         
+        # Plotting current statement and working list.
         plt.text(limx[0], 
                  limy[1] - epsilons_y, 
                  f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}", 
@@ -142,6 +143,10 @@ class GraphDisplayManager():
                  f"Working List: {snapshot.working_list}", 
                  fontsize=6, 
                  color='blue')
+        ###
+        
+        
+        d = {k: f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}" for k,v in self.nodes_positions.items()}
         
         nx.draw(nx_graph, 
                 self.nodes_positions,
@@ -150,11 +155,13 @@ class GraphDisplayManager():
                 node_color='#FFFFFF',
                 font_size=8, 
                 font_weight='bold',
-                arrows=True)
+                arrows=True,
+                labels=d)
         
         plt.xlim(limx)  
         plt.ylim(limy) 
 
+        # Coloring the node in the current iteration.
         nx.draw_networkx_nodes(nx_graph, 
                                self.nodes_positions,
                                nodelist=[snapshot.current_node_label],

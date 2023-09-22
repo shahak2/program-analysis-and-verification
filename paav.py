@@ -13,9 +13,9 @@ from static_analysis import *
 
 def run_sanity_test():
     abstract_domain = ABSTRACT_DOMAINS.parity
-    # program_path = "programs/examples/parity_example.txt"
+    program_path = "programs/examples/parity_example.txt"
     # program_path = "programs/examples/parity_tests/simple_test.txt"
-    program_path = "programs/general_tests/long_program.txt"
+    # program_path = "programs/general_tests/long_program.txt"
 
     plot_graph_flag = True
     static_analysis(program_path, 

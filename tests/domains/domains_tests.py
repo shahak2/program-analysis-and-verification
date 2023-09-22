@@ -96,10 +96,25 @@ def summation_domain_tester():
         # MEET
         for relation in SUMMATION_MEET_RELATIONS:
             utils.printInfo(f'Testing: {relation[0]} (meet) {relation[1]} = {relation[2]} ')
-            res = s_domain.join(relation[0], relation[1])
+            res = s_domain.meet(relation[0], relation[1])
             assert res == relation[2], \
                 f"Invalid Result {res} = {relation[2]}"
         
+        # WIDEN
+        for relation in SUMMATION_WIDEN_RELATIONS:
+            utils.printInfo(f'Testing: {relation[0]} (widen) {relation[1]} = {relation[2]} ')
+            res = s_domain.widen(relation[0], relation[1])
+            assert res == relation[2], \
+                f"Invalid Result {res} = {relation[2]}"
+                
+        # NARROW
+        for relation in SUMMATION_NARROW_RELATIONS:
+            utils.printInfo(f'Testing: {relation[0]} (narrow) {relation[1]} = {relation[2]} ')
+            res = s_domain.narrow(relation[0], relation[1])
+            assert res == relation[2], \
+                f"Invalid Result {res} = {relation[2]}"
+                
+                
     except Exception as e:
         utils.printError(f'{e}')
         return

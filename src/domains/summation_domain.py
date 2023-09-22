@@ -22,6 +22,8 @@ class SummationElement():
         return f"[{self.low},{self.high}]"
 
     def __eq__(self, item2):
+        if type(item2) != SummationElement:
+            return False
         return self.low == item2.low and self.high == item2.high
     
     def __neq__(self, item2):
@@ -30,10 +32,7 @@ class SummationElement():
 class SummationDomain(base_domain.BaseDomain):
     def __init__(self):
         # Interval Domain. The DOMAIN is {Integers, Top=[-inf,inf], Bottom}.
-        DOMAIN = {
-            "TOP": SummationElement(-math.inf, math.inf),
-            "BOTTOM": "BOTTOM"
-        }
+        DOMAIN = { }
         
         super().__init__(DOMAIN)
         self.transformer = SummationTransformer()
@@ -51,15 +50,15 @@ class SummationDomain(base_domain.BaseDomain):
         low = max(item1.low, item2.low)
         high = min(item1.high, item2.high)
         if low > high:
-            return self.domain.BOTTOM
+            return self.BOTTOM
         return SummationElement(low, high)
         
     def widen(self, 
              item1, 
              item2):
-        if item1 == self.domain.BOTTOM:
+        if item1 == self.BOTTOM:
             return item2
-        if item2 == self.domain.BOTTOM:
+        if item2 == self.BOTTOM:
             return item1
         
         low = item1.low if item1.low <= item2.low else -math.inf
@@ -69,12 +68,11 @@ class SummationDomain(base_domain.BaseDomain):
     def narrow(self, 
                 item1, 
                 item2):
-        
-        if item1 == self.domain.BOTTOM:
+        if item1 == self.BOTTOM:
             return item2
-        if item2 == self.domain.BOTTOM:
+        if item2 == self.BOTTOM:
             return item1
         
-        low = item1.low if item1.low <= item2.low else -math.inf
-        high = item1.high if item1.high <= item2.high else math.inf
+        low = item2.low if item1.low == (-math.inf) else item1.low
+        high = item2.high if item1.high == math.inf else item1.high
         return SummationElement(low, high)
