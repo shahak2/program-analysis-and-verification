@@ -134,13 +134,13 @@ class GraphDisplayManager():
         plt.text(limx[0], 
                  limy[1] - epsilons_y, 
                  f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}", 
-                 fontsize=6, 
+                 fontsize=8, 
                  color='blue')
 
         plt.text(limx[0], 
                  limy[1] - 2 * epsilons_y, 
                  f"Working List: {snapshot.working_list}", 
-                 fontsize=6, 
+                 fontsize=8, 
                  color='blue')
         # ============================================
         

@@ -11,7 +11,7 @@ sys.path.insert(1, UTILS_RELATIVE_PATH)
 
 from parity_consts import *
 from parity_domain import ParityDomain
-from summation_domain import SummationDomain, SummationElement
+from summation_domain import SummationDomain
 import utils
 from summation_consts import *
 

@@ -92,14 +92,24 @@ SUMMATION_TESTS = [
     ([BOTTOM, SUMMATION_TOP, BOTTOM],               "a := b - 1",  [SUMMATION_TOP,              SUMMATION_TOP,              BOTTOM]                     ),
     ([BOTTOM, BOTTOM,   SUMMATION_TOP],             "a := c - 1",  [SUMMATION_TOP,              BOTTOM,                     SUMMATION_TOP]              ),
     
-    # Assumptions
-    ([SUMMATION_TOP,            BOTTOM,             BOTTOM],                    "assume",          [SUMMATION_TOP,              BOTTOM,             BOTTOM]                 ),
-    ([SUMMATION_TOP,            SUMMATION_TOP,      BOTTOM],                    "assume(a = b)",   [SUMMATION_TOP,              SUMMATION_TOP,      BOTTOM]                 ), # good: vars are equal
-    ([SUMMATION_TOP,            BOTTOM,             SummationElement(-3, 5)],   "assume(a = b)",   [BOTTOM,                     BOTTOM,             BOTTOM]                 ), # bad: vars are not equal
-    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-3, 5),    SUMMATION_TOP,      SummationElement(-2, 5)]), # good: vars are not equal
-    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(a != c)",  [BOTTOM,                     BOTTOM,             BOTTOM]                 ), # bad: vars are equal
-    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(TRUE)",    [SummationElement(-3, 5),    SUMMATION_TOP,      SummationElement(-3, 5)]),
-    ([SummationElement(-3, 5),  SUMMATION_TOP,      SummationElement(-3, 5)],   "assume(FALSE)",   [BOTTOM,                     BOTTOM,             BOTTOM]                 ),
+    # # Assumptions
+    ([SUMMATION_TOP,            BOTTOM,                      BOTTOM],                    "assume",          [SUMMATION_TOP,             BOTTOM,                     BOTTOM]                 ),
+    ([SUMMATION_TOP,            SUMMATION_TOP,               BOTTOM],                    "assume(a = 3)",   [SummationElement(3, 3),    SUMMATION_TOP,              BOTTOM]                 ),
+    ([SummationElement(3, 3),   SUMMATION_TOP,               BOTTOM],                    "assume(a != 3)",  [BOTTOM,                    SUMMATION_TOP,              BOTTOM]                 ),
+    ([SummationElement(1, 4),   SUMMATION_TOP,               BOTTOM],                    "assume(a != 3)",  [SummationElement(1, 4),    SUMMATION_TOP,              BOTTOM]                 ),
+    ([SummationElement(1, 4),   SUMMATION_TOP,               BOTTOM],                    "assume(a = 3)",   [SummationElement(3, 3),    SUMMATION_TOP,              BOTTOM]                 ),
+    ([SummationElement(1, 10),  SUMMATION_TOP,               BOTTOM],                    "assume(a != 5)",  [SummationElement(1, 10),   SUMMATION_TOP,              BOTTOM]                 ),
+    ([SummationElement(1, 10),  SummationElement(3, 13),     BOTTOM],                    "assume(a = b)",   [SummationElement(3, 10),   SummationElement(3, 10),    BOTTOM]                 ),
+    ([SummationElement(1, 3),   SummationElement(6, 9),      SUMMATION_TOP],             "assume(a = b)",   [BOTTOM,                    BOTTOM,                     SUMMATION_TOP]          ),
+    ([SummationElement(1, 3),   BOTTOM,                      SUMMATION_TOP],             "assume(a = b)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ),
+    ([BOTTOM,                   SummationElement(6, 9),      SUMMATION_TOP],             "assume(a = b)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ),
+    ([SUMMATION_TOP,            SUMMATION_TOP,               BOTTOM],                    "assume(a = b)",   [SUMMATION_TOP,             SUMMATION_TOP,              BOTTOM]                 ), # good: vars are equal
+    ([SUMMATION_TOP,            BOTTOM,                      SummationElement(-3, 5)],   "assume(a = b)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ), # bad: vars are not equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-3, -3),   SUMMATION_TOP,              SummationElement(-2, 5)]), # good: vars are not equal
+    ([SummationElement(-4, -3),  SUMMATION_TOP,               SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-4, -3),   SUMMATION_TOP,              SummationElement(-2, 5)]), # good: vars are not equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(a != c)",  [BOTTOM,                    BOTTOM,                     BOTTOM]                 ), # bad: vars are equal
+    ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(TRUE)",    [SummationElement(-3, 5),   SUMMATION_TOP,              SummationElement(-3, 5)]),
+    ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(FALSE)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ),
     
     # Assertions
     ([BOTTOM,                                BOTTOM,                                 BOTTOM                 ], "assert (SUM a b = SUM b c)",    CANNOT_VALIDATE ),
@@ -112,5 +122,5 @@ SUMMATION_TESTS = [
     ([SummationElement(-math.inf, math.inf), SummationElement(-math.inf, math.inf),  SummationElement(-3, 5)], "assert (SUM a = SUM b)",        True            ),
     ([SummationElement(-math.inf, 1),        SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        True            ),
     ([SummationElement(-math.inf, 1),        BOTTOM,                                 BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
-    ([BOTTOM,                                SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
+    ([BOTTOM,                                SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE )
 ]

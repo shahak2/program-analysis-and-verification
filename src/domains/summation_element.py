@@ -16,8 +16,8 @@ class SummationElement():
             return False
         return self.low == item2.low and self.high == item2.high
     
-    def __neq__(self, item2):
-        return self.low != item2.low or self.high != item2.high
+    def __ne__(self, item2):
+        return not (self == item2)
     
     def __add__(self, item2):
         if type(item2) == str and item2 == BOTTOM:

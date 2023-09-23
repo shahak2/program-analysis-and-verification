@@ -3,14 +3,18 @@ from enum import StrEnum
 
 SRC_RELATIVE_PATH = "src/"
 UTILS_RELATIVE_PATH = "utils/"
+DOMAINS_PATH = SRC_RELATIVE_PATH + 'domains/'
 PARITY_TRANSFORMER_PATH = SRC_RELATIVE_PATH + 'transformers/'
 
-sys.path.insert(1, PARITY_TRANSFORMER_PATH)
+
+sys.path.insert(1, DOMAINS_PATH)
 sys.path.insert(1, UTILS_RELATIVE_PATH)
+sys.path.insert(1, PARITY_TRANSFORMER_PATH)
 
 import utils
 from parity_transformer import ParityTransformer
 from summation_transformer import SummationTransformer
+from summation_domain import SummationDomain
 from transformers_consts import *
 
 def perform_test(transformer, test):
@@ -54,11 +58,13 @@ def parity_transformer_tester():
         return
     utils.printSuccess("All tests Passed!")
 
-
 def summation_transformer_tester():
     utils.printMessage("Summation Transformer Test")
     try:
-        summation_t = SummationTransformer()
+        
+        s_domain = SummationDomain()
+        
+        summation_t = s_domain.transformer
         summation_t.set_variables_to_index_mapping(
             SUMMATION_MOCK_VARIABLES)
         
@@ -71,7 +77,7 @@ def summation_transformer_tester():
     
     
 def run_tests():
-    # parity_transformer_tester()
+    parity_transformer_tester()
     summation_transformer_tester()
 
 if __name__ == '__main__':

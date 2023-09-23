@@ -15,7 +15,7 @@ def parser_tester():
     
     TESTER_PROGRAM_PATH = SRC_RELATIVE_PATH +\
         "../programs/examples/language_example.txt"
-    expected_variables_results = {'i', 'j', 'n'}
+    expected_variables_results = ['n', 'i', 'j']
     
     try:
         p = Parser(TESTER_PROGRAM_PATH)

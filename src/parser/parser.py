@@ -35,5 +35,5 @@ class Parser:
         return lines_results
     
     def parseVariables(self, variables_line):
-        variables = set(variables_line.strip().split(" "))
+        variables = list(variables_line.strip().split(" "))
         return variables

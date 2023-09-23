@@ -40,8 +40,10 @@ def set_domain(abstract_domain):
 def static_analysis(program_path, 
                     abstract_domain,
                     plot_graph_flag = False,
-                    use_widen_flag = False):
-    utils.printMessage("Running static analysis...")
+                    use_widen_flag = False,
+                    use_narrow_flag = False):
+    
+    
     parsed_program = Parser(program_path)
     
     domain = set_domain(abstract_domain)
@@ -57,14 +59,33 @@ def static_analysis(program_path,
     
     graph_disp_manager = GraphDisplayManager(program_cfg)
 
-    CI.chaotic_iteration(domain,
-                         program_cfg,
-                         graph_disp_manager)
+    if use_widen_flag:
+        utils.printMessage("Running static analysis with widen")
+        CI.chaotic_iteration(domain,
+                            program_cfg,
+                            graph_disp_manager,
+                            use_widen_flag=True,
+                            use_narrow_flag=False)
     
-    utils.printMessage("Analysis finished")
+        if use_narrow_flag:
+            utils.printMessage("Running static analysis with narrow")
+            CI.chaotic_iteration(domain,
+                                program_cfg,
+                                graph_disp_manager,
+                                use_widen_flag=False,
+                                use_narrow_flag=True)
+    
+    else:
+        utils.printMessage("Running basic static analysis")
+        CI.chaotic_iteration(domain,
+                            program_cfg,
+                            graph_disp_manager,
+                            use_widen_flag=False)
+    
+ 
+    
+    
+    utils.printMessage("Analysis finished!")
 
     if plot_graph_flag:
         graph_disp_manager.plot_multipartite_graph()
-    
-    
-
