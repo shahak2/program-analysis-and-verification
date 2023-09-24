@@ -50,3 +50,12 @@ def parse_summation_conditions(input_string):
         conditions_list.append((left_sum_vars, right_sum_vars))
 
     return conditions_list
+
+def remove_brackets_with_word(statement, 
+                              word):
+    import re
+    pattern = rf'\([^)]*{word}[^)]*\)'
+    
+    result = re.sub(pattern, '', statement)
+    
+    return result

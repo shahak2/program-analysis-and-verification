@@ -136,70 +136,256 @@ COMBINED_TESTS = [
     # Assignments
     (
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP),
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ],
         "entry",
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ]                  
     ),
     (
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ],
         "c := ?",
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(BOTTOM, BOTTOM)
         ]                  
     ),
     (
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ],
         "c := 378",
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(EVEN, SummationElement(378, 378))
         ]                  
     ),
     (
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ],
         "b := c",
         [
-            CombinedElement(TOP ,SUMMATION_TOP), 
-            CombinedElement(ODD ,SummationElement(-3, 5)), 
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(ODD, SummationElement(-3, 5)), 
             CombinedElement(ODD, SummationElement(-3, 5))
         ]                  
     ),
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # # Assumptions
-    # ([SUMMATION_TOP,            BOTTOM,                      BOTTOM],                    "assume",          [SUMMATION_TOP,             BOTTOM,                     BOTTOM]                 ),
+    (
+        [
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "b := c + 1",
+        [
+            CombinedElement(TOP, SUMMATION_TOP), 
+            CombinedElement(EVEN, SummationElement(-2, 6)), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
 
+
+    # Assumptions
+    (
+        [
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assume(a = 3)",
+        [
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, BOTTOM),
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(2, 2)), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assume(a = 3)",
+        [
+            CombinedElement(ODD, BOTTOM), 
+            CombinedElement(BOTTOM, BOTTOM),
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(EVEN, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assume(a = 3)",
+        [
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, BOTTOM),
+            CombinedElement(BOTTOM, SummationElement(-3, 5))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assume(a = 3)",
+        [
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, BOTTOM),
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assume(a != 3)",
+        [
+            CombinedElement(BOTTOM, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, BOTTOM),
+            CombinedElement(BOTTOM, SummationElement(-3, 5))
+        ]                  
+    ),
+    
     # Assertions
-    # ([BOTTOM,                                BOTTOM,                                 BOTTOM                 ], "assert (SUM a b = SUM b c)",    CANNOT_VALIDATE ),
+
+    (
+        [
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "assert (SUM a b = SUM b c)",
+        False                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(ODD, SummationElement(3, 3))
+        ],
+        "assert (SUM a b = SUM b c)",
+        True                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(ODD, SummationElement(4, 7))
+        ],
+        "assert (SUM a b = SUM c)",
+        True                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(ODD, SummationElement(4, 7))
+        ],
+        "assert (ODD a)",
+        True                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(BOTTOM, SummationElement(3, 3)), 
+            CombinedElement(ODD, SummationElement(4, 7))
+        ],
+        "assert (ODD b)",
+        CANNOT_VALIDATE                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 4)), 
+            CombinedElement(ODD, SummationElement(3, 3)), 
+            CombinedElement(EVEN, SummationElement(4, 7))
+        ],
+        "assert (EVEN c) (ODD b)",
+        True                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(EVEN, SummationElement(4, 7))
+        ],
+        "assert (EVEN c) (SUM a = SUM b)",
+        True                  
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(EVEN, SummationElement(4, 7))
+        ],
+        "assert (ODD c) (SUM a = SUM b)",
+        False               
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(EVEN, SummationElement(4, 7))
+        ],
+        "assert (ODD a EVEN c) (SUM a = SUM b)",
+        True               
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(BOTTOM, SummationElement(4, 7))
+        ],
+        "assert (ODD a EVEN c) (SUM a = SUM b)",
+        CANNOT_VALIDATE               
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 2)), 
+            CombinedElement(EVEN, SummationElement(4, 7))
+        ],
+        "assert (ODD a EVEN c) (SUM a = SUM b)",
+        False               
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 2)), 
+            CombinedElement(BOTTOM, SummationElement(4, 7))
+        ],
+        "assert (ODD a EVEN c) (SUM a = SUM b)",
+        False               
+    ),
+    (
+        [
+            CombinedElement(ODD, SummationElement(1, 1)), 
+            CombinedElement(ODD, SummationElement(1, 2)), 
+            CombinedElement(BOTTOM, SummationElement(4, 7))
+        ],
+        "assert (ODD a EVEN c)",
+        CANNOT_VALIDATE               
+    ),
+
 ]

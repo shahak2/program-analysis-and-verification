@@ -91,8 +91,8 @@ def combined_transformer_tester():
     utils.printSuccess("All tests Passed!")  
     
 def run_tests():
-    # parity_transformer_tester()
-    # summation_transformer_tester()
+    parity_transformer_tester()
+    summation_transformer_tester()
     combined_transformer_tester()
 
 if __name__ == '__main__':

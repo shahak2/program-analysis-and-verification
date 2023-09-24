@@ -16,10 +16,12 @@ class CombinedDomain():
     
     def __init__(self):
         
-        self.transformer = CombinedTransformer(self)
+        
         
         self.parity_domain= ParityDomain()
         self.summation_domain = SummationDomain()
+
+        self.transformer = CombinedTransformer(self)
         
         self.TOP = CombinedElement(self.parity_domain.TOP,
                                    self.summation_domain.TOP)

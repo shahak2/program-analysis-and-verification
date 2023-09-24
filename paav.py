@@ -49,7 +49,10 @@ def run_summation_sanity_test():
 def run_combined_sanity_test():
     abstract_domain = ABSTRACT_DOMAINS.combined
     
-    program_path = "programs/examples/summation_example.txt"
+    # program_path = "programs/examples/summation_example.txt"
+    program_path = "programs/examples/summation_tests/class_test.txt"
+    # program_path = "programs/examples/summation_tests/simple_test.txt"
+    
     
     domain_bottom = CombinedElement("BOTTOM", 
                                     "BOTTOM")
