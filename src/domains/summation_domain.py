@@ -70,15 +70,15 @@ class SummationDomain(base_domain.BaseDomain):
     def vector_widen(self, 
                      values_vector1,
                      values_vector2):
-            assert len(values_vector1) == len(values_vector1), \
-                "Cannot perform widen on vectors with different length!"
-            
-            vector_length = len(values_vector1)
-            result_vector = [None for i in range(0, vector_length)]
-            for i in range(0, vector_length):
-                result_vector[i] = self.widen(values_vector1[i],
-                                              values_vector2[i])
-            return result_vector
+        assert len(values_vector1) == len(values_vector1), \
+            "Cannot perform widen on vectors with different length!"
+        
+        vector_length = len(values_vector1)
+        result_vector = [None for i in range(0, vector_length)]
+        for i in range(0, vector_length):
+            result_vector[i] = self.widen(values_vector1[i],
+                                            values_vector2[i])
+        return result_vector
         
     def vector_narrow(self, 
                       values_vector1,

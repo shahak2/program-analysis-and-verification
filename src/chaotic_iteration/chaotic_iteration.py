@@ -28,8 +28,12 @@ def chaotic_iteration(abstract_domain,
                       use_widen_flag = False,
                       use_narrow_flag = False):
     
-    cfg_nodes_labels = program_cfg.get_all_cfg_nodes_labels()
-    working_list_ignore_insert_set = program_cfg.exit_labels_set.copy()
+    cfg_nodes_labels = \
+        program_cfg.get_all_cfg_nodes_labels()
+        
+    working_list_ignore_insert_set = \
+        program_cfg.exit_labels_set.copy()
+        
     working_list = WorkingList(cfg_nodes_labels, 
                                working_list_ignore_insert_set)
     
@@ -57,11 +61,13 @@ def chaotic_iteration(abstract_domain,
                     
             if use_widen_flag and program_cfg.is_loop_node(cfg_node_label):
                 joined_vector = \
-                    abstract_domain.vector_widen(current_values_vector, joined_vector)
+                    abstract_domain.vector_widen(current_values_vector, 
+                                                 joined_vector)
                 
             elif use_narrow_flag and program_cfg.is_loop_node(cfg_node_label):
                 joined_vector = \
-                    abstract_domain.vector_narrow(current_values_vector, joined_vector)
+                    abstract_domain.vector_narrow(current_values_vector, 
+                                                  joined_vector)
         
         print_status(current_cfg_node,
                      joined_vector, 

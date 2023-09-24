@@ -4,6 +4,8 @@ class OPERATIONS(StrEnum):
     meet = "meet"
     join = "join"
     contains = "contains"
+    widen = "widen"
+    narrow = "narrow"
 
 
 TOP = "TOP"
