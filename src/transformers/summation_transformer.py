@@ -13,7 +13,8 @@ import transformer_utils as TU
 
 
 class SummationTransformer(BaseTransformer):
-    def __init__(self, domain):
+    def __init__(self, 
+                 domain):
         self.domain_interface = domain
         super().__init__()
     

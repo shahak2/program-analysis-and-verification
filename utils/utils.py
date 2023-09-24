@@ -17,6 +17,5 @@ def printInfo(print_input):
 def printLog(print_input): 
     print(print_input)
 
-
 def print_usage_message():
     printError("Usage: \n- python paav.py <program_path> <abstract_domain>\n- python paav.py -t for testing")

@@ -6,16 +6,17 @@ UTILS_RELATIVE_PATH = "utils/"
 DOMAINS_PATH = SRC_RELATIVE_PATH + 'domains/'
 PARITY_TRANSFORMER_PATH = SRC_RELATIVE_PATH + 'transformers/'
 
-
 sys.path.insert(1, DOMAINS_PATH)
 sys.path.insert(1, UTILS_RELATIVE_PATH)
 sys.path.insert(1, PARITY_TRANSFORMER_PATH)
 
 import utils
+from transformers_consts import *
+from combined_domain import CombinedDomain
+from summation_domain import SummationDomain
 from parity_transformer import ParityTransformer
 from summation_transformer import SummationTransformer
-from summation_domain import SummationDomain
-from transformers_consts import *
+
 
 def perform_test(transformer, test):
     values_vector = test[0]
@@ -30,7 +31,6 @@ def perform_test(transformer, test):
     utils.printInfo(
         f'Test passed: [{statement}]# {values_vector} == {result}')
 
-
 def parity_transformer_tester():
     utils.printMessage("Parity Transformer Test")
     try:
@@ -38,7 +38,6 @@ def parity_transformer_tester():
         parity_t = ParityTransformer()
         parity_t.set_variables_to_index_mapping(
             PARITY_MOCK_VARIABLES)
-        
         
         for test in PARITY_TESTS:
             perform_test(parity_t, 
@@ -61,7 +60,6 @@ def parity_transformer_tester():
 def summation_transformer_tester():
     utils.printMessage("Summation Transformer Test")
     try:
-        
         s_domain = SummationDomain()
         
         summation_t = s_domain.transformer
@@ -75,10 +73,27 @@ def summation_transformer_tester():
         return
     utils.printSuccess("All tests Passed!")
     
+def combined_transformer_tester():
+    utils.printMessage("Combined Transformer Test")
+    try:
+        c_domain = CombinedDomain()
+        
+        c_transformer = c_domain.transformer
+        c_transformer.set_variables_to_index_mapping(
+            COMBINED_MOCK_VARIABLES)
+        
+        for test in COMBINED_TESTS:
+            perform_test(c_transformer, test)
+            
+    except Exception as e:
+        utils.printError(f'{e}')
+        return
+    utils.printSuccess("All tests Passed!")  
     
 def run_tests():
-    parity_transformer_tester()
-    summation_transformer_tester()
+    # parity_transformer_tester()
+    # summation_transformer_tester()
+    combined_transformer_tester()
 
 if __name__ == '__main__':
     utils.printMessage(

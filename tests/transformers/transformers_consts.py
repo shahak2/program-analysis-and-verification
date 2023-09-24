@@ -1,14 +1,17 @@
 import sys
-from enum import StrEnum
-
 import math
+from enum import StrEnum
 
 SRC_RELATIVE_PATH = "src/"
 DOMAINS_PATH = SRC_RELATIVE_PATH + 'domains/'
 
 sys.path.insert(1, DOMAINS_PATH)
 
+from combined_element import CombinedElement
 from summation_element import SummationElement
+
+
+CANNOT_VALIDATE = "Cannot validate"
 
 #################### Parity Testing ####################
 
@@ -17,7 +20,6 @@ TOP = "TOP"
 BOTTOM = "BOTTOM"
 ODD = "ODD"
 EVEN = "EVEN"
-CANNOT_VALIDATE = "Cannot validate"
 
 """
     PARITY_TESTS: A tuple of (values_vector, statement, expected_result_vector)
@@ -123,4 +125,81 @@ SUMMATION_TESTS = [
     ([SummationElement(-math.inf, 1),        SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        True            ),
     ([SummationElement(-math.inf, 1),        BOTTOM,                                 BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
     ([BOTTOM,                                SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE )
+]
+
+
+#################### Combined Testing ####################
+
+COMBINED_MOCK_VARIABLES = {"a": 0,  "b": 1,  "c": 2}
+
+COMBINED_TESTS = [
+    # Assignments
+    (
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "entry",
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "c := ?",
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(BOTTOM, BOTTOM)
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "c := 378",
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(EVEN, SummationElement(378, 378))
+        ]                  
+    ),
+    (
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(BOTTOM ,BOTTOM), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ],
+        "b := c",
+        [
+            CombinedElement(TOP ,SUMMATION_TOP), 
+            CombinedElement(ODD ,SummationElement(-3, 5)), 
+            CombinedElement(ODD, SummationElement(-3, 5))
+        ]                  
+    ),
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # # Assumptions
+    # ([SUMMATION_TOP,            BOTTOM,                      BOTTOM],                    "assume",          [SUMMATION_TOP,             BOTTOM,                     BOTTOM]                 ),
+
+    # Assertions
+    # ([BOTTOM,                                BOTTOM,                                 BOTTOM                 ], "assert (SUM a b = SUM b c)",    CANNOT_VALIDATE ),
 ]

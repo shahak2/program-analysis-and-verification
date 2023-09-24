@@ -1,91 +1,89 @@
-from base_transformer import BaseTransformer
+import sys
+
 from consts import *
+from parity_transformer import ParityTransformer
+from summation_transformer import SummationTransformer
 from transformer_utils import split_string_by_keywords
 
-BOOLEANS_KEYWORDS = [
-    SUMMATION_CONDITION_CONSTS.summation
-]
+SRC_RELATIVE_PATH = "src/"
+DOMAINS_RELATIVE_PATH = SRC_RELATIVE_PATH + 'domains/'
 
+sys.path.insert(1, DOMAINS_RELATIVE_PATH)
 
-class CombinedTransformer(BaseTransformer):
-    def __init__(self):
-        
-        super().__init__()
-    
-    def evaluate_constant(self, 
-                          value: int):
-        return value
-    
-    def evaluate_unknown(self):
-        return BOTTOM
-        
+from combined_element import CombinedElement
 
-    
-    ##########################################
-    ##########################################
-    ################## HERE ##################
-    ##########################################
-    ##########################################
+BOTTOM = CombinedElement("BOTTOM", "BOTTOM")
 
-    def evaluate_variable(self,
-                          variable,
-                          values_vector):
-        self.check_valid_variable(variable)
-        return self.get_variable_domain_value(variable, 
-                                              values_vector)
-    
-    def evaluate_expression_by_operator(self, 
-                                        value1,
-                                        value2,
-                                        operation):
-        # There are mathematical "tricks" here.
-        # Implementation of "value1 +- value2" in Parity Domain.
-        if value1 == BOTTOM or value2 == BOTTOM:
-            return BOTTOM
-        if value1 == TOP or value2 == TOP:
-            return TOP
-        if value1 == value2:
-            return EVEN
-        return ODD
-    
-    def evaluate_booleans(self, 
-                          and_conditions_string,
-                          values_vector):
+class CombinedTransformer():
+    def __init__(self, domain):
+        self.summation_transformer = SummationTransformer(self)
+        self.parity_transformer = ParityTransformer()
         
-        conditions_list = \
-            split_string_by_keywords(and_conditions_string,
-                                     BOOLEANS_KEYWORDS)
+        self.domain_interface = domain
+    
+    def set_variables_to_index_mapping(self,
+                                       variable_to_index_mapping: dict):
+        self.summation_transformer.set_variables_to_index_mapping(
+            variable_to_index_mapping)
         
-        for condition in conditions_list:
-            result = self.evaluate_condition(condition, 
-                                             values_vector)
+        self.parity_transformer.set_variables_to_index_mapping(
+            variable_to_index_mapping)
+
+    def is_transformer_ready(self):
+        return self.summation_transformer.variable_to_index_mapping != None and \
+            self.parity_transformer.variable_to_index_mapping != None
+    
+    def check_transformer_ready(self):
+        if not self.is_transformer_ready():
+            raise RuntimeError(
+                "Cannot use the transformer before setting\
+                    a mapping between variables and their indices")
+    
+    def is_valid_variable(self, variable):
+        return variable in self.summation_transformer.variable_to_index_mapping.keys()
+    
+    def check_valid_variable(self, variable):
+        if not self.is_valid_variable(variable):
+            raise RuntimeError(
+                f"Cannot use variables that \
+                    are not pre-defined: [{variable}]")
             
-            if result == CANNOT_VALIDATE:
-                return CANNOT_VALIDATE
+    def get_variable_index_in_vector(self, 
+                                     variable):
+        return self.summation_transformer.variable_to_index_mapping[variable]
+    
+    def get_variable_domain_value(self, 
+                                  variable, 
+                                  values_vector):
+        variable_index = \
+            self.get_variable_index_in_vector(variable)
+        return values_vector[variable_index]
+    
+    def is_assume_split_node(self, 
+                             statement):
+        return CONDITION_CONSTS.left_bracket not in statement
+    
+    def get_vector_of_bottom_values(self, 
+                                    size):
+        return [BOTTOM] * size
+        
+    # Parsing 
+    def parse_statement(self, 
+                        statement,
+                        values_vector: list[CombinedElement]):
+        
+        parity_values_vector = \
+            self.domain_interface.get_parity_values_from_vector(values_vector)
+        
+        summation_values_vector = \
+            self.domain_interface.get_summation_values_from_vector(values_vector)
+        
+        parity_result = self.parity_transformer.parse_statement(statement, 
+                                                                parity_values_vector)
+        
+        summation_result = self.summation_transformer.parse_statement(statement, 
+                                                                      summation_values_vector)
+        
+        return self.domain_interface.combine_summation_and_parity_vector(parity_result, 
+                                                                         summation_result)
             
-            if not result:
-                return False
-        
-        return True
-    
-    def is_not_able_to_validate(variable_value):
-        return variable_value == BOTTOM
-    
-    def evaluate_condition(self, 
-                           condition,
-                           values_vector):
-        
-        condition_type, variable = condition.split()
-        self.check_valid_variable(variable)
-        
-        variable_value = \
-            self.get_variable_domain_value(variable, 
-                                           values_vector)
-        
-        if CombinedTransformer.is_not_able_to_validate(variable_value):
-            return CANNOT_VALIDATE
-        
-        if condition_type == PARITY_CONDITION_CONSTS.odd:
-            return variable_value == ODD
-        
-        return variable_value == EVEN
