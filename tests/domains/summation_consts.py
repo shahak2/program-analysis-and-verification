@@ -25,13 +25,13 @@ SUMMATION_MEET_RELATIONS = [
 ]
 
 SUMMATION_WIDEN_RELATIONS = [
-    (BOTTOM,                                BOTTOM,                     BOTTOM                                 ), 
-    (BOTTOM,                                SummationElement(1, 2),     (SummationElement(1, 2))               ), 
-    (SummationElement(1, 2),                SummationElement(1, 2),     (SummationElement(1, 2))               ),
-    (SummationElement(1, 2),                SummationElement(2, 3),     (SummationElement(1, 2))               ),
-    (SummationElement(1, 2),                SummationElement(0, 3),     (SummationElement(-math.inf, 2))       ),
-    (SummationElement(1, 3),                SummationElement(2, 2),     (SummationElement(1, math.inf))        ),
-    (SummationElement(1, 3),                SummationElement(0, 2),     (SummationElement(-math.inf, math.inf)))
+    (BOTTOM,                                BOTTOM,                     BOTTOM                               ), 
+    (BOTTOM,                                SummationElement(1, 2),     SummationElement(1, 2)               ), 
+    (SummationElement(1, 2),                SummationElement(1, 2),     SummationElement(1, 2)               ),
+    (SummationElement(1, 2),                SummationElement(2, 3),     SummationElement(1, math.inf)        ),
+    (SummationElement(1, 2),                SummationElement(0, 3),     SummationElement(-math.inf, math.inf)),
+    (SummationElement(1, 3),                SummationElement(2, 2),     SummationElement(1, 3)               ),
+    (SummationElement(1, 3),                SummationElement(0, 2),     SummationElement(-math.inf, 3)       )
 ]
 
 SUMMATION_NARROW_RELATIONS = [

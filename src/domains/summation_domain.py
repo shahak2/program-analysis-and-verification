@@ -52,7 +52,7 @@ class SummationDomain(base_domain.BaseDomain):
             return item1
         
         low = item1.low if item1.low <= item2.low else -math.inf
-        high = item1.high if item1.high <= item2.high else math.inf
+        high = item1.high if item1.high >= item2.high else math.inf
         return SummationElement(low, high)
 
     def narrow(self, 

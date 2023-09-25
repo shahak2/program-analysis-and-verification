@@ -1,0 +1,7 @@
+x k
+L0 x := 7 L1
+L1 k := 1001 L2
+L2 assume(x = 1000) L4
+L2 assume(x != 1000) L3
+L3 x := x + 2 L2
+L4 assert (SUM x = SUM k) (EVEN x) L5

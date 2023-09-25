@@ -40,6 +40,43 @@
                 "-t",
                 // "s"
             ]
+        },
+        {
+            "name": "combined test",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "paav.py",
+            "console": "externalTerminal",
+            "justMyCode": true,
+            "args": [ 
+                // "programs/examples/combined_tests/class_test.txt",
+                // "programs/examples/combined_tests/parity_fails.txt",
+                "programs/examples/combined_tests/summation_fails.txt",
+                "c",
+                "-w",
+                // "-n",
+                "-p"
+            ]
+        },
+        {
+            "name": "summation test",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "paav.py",
+            "console": "externalTerminal",
+            "justMyCode": true,
+            "args": [ 
+                // "programs/examples/combined_tests/class_test.txt",
+                // "programs/examples/combined_tests/parity_fails.txt",
+                // "programs/examples/combined_tests/summation_fails.txt",
+                "programs/examples/summation_tests/class_test.txt",
+                "s",
+                "-w",
+                "-n",
+                "-p"
+            ]
         }
 
     ]
