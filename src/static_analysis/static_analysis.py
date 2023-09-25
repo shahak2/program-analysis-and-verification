@@ -25,14 +25,12 @@ from combined_domain import CombinedDomain
 from control_flow_graph import ControlFlowGraph
 from graph_display_manager import GraphDisplayManager
 
-DEFAULT_DOMAIN_BOTTOM = "BOTTOM"
-
 class ABSTRACT_DOMAINS(StrEnum):
-    parity = "parity"
-    summation = "summation"
-    combined = "combined"
+    parity = "p"
+    summation = "s"
+    combined = "c"
 
-def set_domain(abstract_domain):
+def get_domain(abstract_domain):
     if abstract_domain == ABSTRACT_DOMAINS.parity:
         return ParityDomain()
     elif abstract_domain == ABSTRACT_DOMAINS.summation:
@@ -43,16 +41,16 @@ def static_analysis(program_path,
                     abstract_domain,
                     plot_graph_flag = False,
                     use_widen_flag = False,
-                    use_narrow_flag = False,
-                    domain_bottom = DEFAULT_DOMAIN_BOTTOM):
+                    use_narrow_flag = False):
+    
     parsed_program = Parser(program_path)
-    domain = set_domain(abstract_domain)
-    default_entry_node_value = domain.TOP
+
+    domain = get_domain(abstract_domain)
     
     program_cfg = ControlFlowGraph(parsed_program.program,
                                    parsed_program.variables,
-                                   default_entry_node_value,
-                                   domain_bottom=domain_bottom)
+                                   default_entry_node_value=domain.TOP,
+                                   domain_bottom=domain.BOTTOM)
     
     domain.transformer.set_variables_to_index_mapping(
         program_cfg.variable_to_index_mapping)
@@ -74,11 +72,16 @@ def static_analysis(program_path,
                                 use_widen_flag=False,
                                 use_narrow_flag=True)
     else:
-        utils.printMessage("Running basic static analysis")
+        if use_narrow_flag:
+            utils.printMessage("Running static analysis with narrow")
+        else:
+            utils.printMessage("Running basic static analysis")
+        
         CI.chaotic_iteration(domain,
                             program_cfg,
                             graph_disp_manager,
-                            use_widen_flag=False)
+                            use_widen_flag=False,
+                            use_narrow_flag=use_narrow_flag)
     
     utils.printMessage("Analysis finished!")
 

@@ -84,7 +84,6 @@ class CombinedTransformer():
                                statement):
         return "SUM" in statement
 
-
     def get_summation_assertion(self, 
                                 statement):
         assert_without_odd =  \
@@ -101,7 +100,6 @@ class CombinedTransformer():
             remove_brackets_with_word(statement, "SUM")
         
         return assert_without_sum
-
 
     # Parsing 
     def parse_statement(self, 
@@ -136,7 +134,6 @@ class CombinedTransformer():
                 return CANNOT_VALIDATE
             return parity_assertion_res and summation_assertion_res
                 
-
         parity_result = self.parity_transformer.parse_statement(statement, 
                                                                 parity_values_vector)
         

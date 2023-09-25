@@ -37,7 +37,8 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": [ 
-                "-t" 
+                "-t",
+                // "s"
             ]
         }
 
