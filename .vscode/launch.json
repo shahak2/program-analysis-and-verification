@@ -69,7 +69,8 @@
             "args": [ 
                 // "programs/summation_tests/class_test.txt", "s", "-p"
                 // "programs/summation_tests/class_test.txt", "s", "-p", "-w"
-                "programs/summation_tests/narrow_test.txt", "s", "-p", "-w", "-n"
+                // "programs/summation_tests/class_test.txt", "s", "-p", "-w", "-n" 
+                "programs/summation_tests/class_test.txt", "s", "-p", "-w", "-n" 
 
             ]
         },
