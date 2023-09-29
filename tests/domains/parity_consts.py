@@ -7,7 +7,6 @@ class OPERATIONS(StrEnum):
     widen = "widen"
     narrow = "narrow"
 
-
 TOP = "TOP"
 BOTTOM = "BOTTOM"
 ODD = "ODD"

@@ -37,6 +37,13 @@ def get_domain(abstract_domain):
         return SummationDomain()
     return CombinedDomain()
 
+def print_results(cfg_graph):
+    results_vector = cfg_graph.get_all_nodes_value_vectors()
+    
+    utils.printMessage("Analysis Results:")
+    for key, element in results_vector.items():
+        utils.printLog(f"{key}:, {element}")
+
 def static_analysis(program_path, 
                     abstract_domain,
                     plot_graph_flag = False,
@@ -82,6 +89,8 @@ def static_analysis(program_path,
                             graph_disp_manager,
                             use_widen_flag=False,
                             use_narrow_flag=use_narrow_flag)
+    
+    print_results(program_cfg)
     
     utils.printMessage("Analysis finished!")
 

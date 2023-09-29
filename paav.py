@@ -33,11 +33,7 @@ def run_summation_sanity_test():
 
 def run_combined_sanity_test():
     abstract_domain = ABSTRACT_DOMAINS.combined
-    
-    # program_path = "programs/examples/summation_example.txt"
-    program_path = "programs/examples/summation_tests/class_test.txt"
-    # program_path = "programs/examples/summation_tests/simple_test.txt"
-
+    program_path = "programs/summation_tests/class_test.txt"
     plot_graph_flag = False
     static_analysis(program_path, 
                     abstract_domain,
@@ -85,6 +81,10 @@ def main():
 
     program_path = args.path
     abstract_domain = args.domain
+    
+    if not abstract_domain:
+        utils.printError("Cannot run analysis without choosing a path and a domain from [p,s,c]. Get help with -h.")
+        sys.exit(1)
     
     static_analysis(program_path, 
                     abstract_domain,

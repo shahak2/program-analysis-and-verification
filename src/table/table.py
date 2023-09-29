@@ -12,7 +12,6 @@ class Table:
         key = tuple(sorted([elem1, elem2]))
         return self.table[key]
     
-    
     def set_relation(self, elem1, elem2, value):
         assert elem1 in self.elements and elem2 in self.elements, "Invalid elements"
         

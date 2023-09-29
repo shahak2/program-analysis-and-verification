@@ -19,6 +19,7 @@ class PARITY_DOMAIN(StrEnum):
 SUMMATION_TOP = SummationElement(-math.inf, math.inf)
 SUMMATION_BOTTOM = "BOTTOM"
 
+# ====== Relations Template ======
 # (
     # CombinedElement1, 
     # CombinedElement2, 
@@ -48,15 +49,15 @@ COMBINED_JOIN_RELATIONS = [
     )
 ]
 
-COMBINED_MEET_RELATIONS = [
+COMBINED_MEET_RELATIONS = [ #TODO: Implement
 
 ]
 
-COMBINED_WIDEN_RELATIONS = [
+COMBINED_WIDEN_RELATIONS = [ #TODO: Implement
 
 ]
 
-COMBINED_NARROW_RELATIONS = [
+COMBINED_NARROW_RELATIONS = [ #TODO: Implement
 
 ]
 

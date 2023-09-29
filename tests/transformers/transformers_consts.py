@@ -10,7 +10,6 @@ sys.path.insert(1, DOMAINS_PATH)
 from combined_element import CombinedElement
 from summation_element import SummationElement
 
-
 CANNOT_VALIDATE = "Cannot validate"
 
 #################### Parity Testing ####################
@@ -71,9 +70,8 @@ PARITY_TESTS_LONG = [
     ([TOP, BOTTOM, ODD, TOP, BOTTOM, ODD], "a := b",     [BOTTOM,   BOTTOM, ODD, TOP, BOTTOM, ODD]),
     ([TOP, BOTTOM, ODD, TOP, BOTTOM, ODD], "e := f",     [TOP,      BOTTOM, ODD, TOP, ODD,    ODD]),
     ([TOP, BOTTOM, ODD, TOP, BOTTOM, ODD], "e := f + 1", [TOP,      BOTTOM, ODD, TOP, EVEN,   ODD]),
-    ([TOP, BOTTOM, ODD, TOP, BOTTOM, ODD], "e := f - 1", [TOP,      BOTTOM, ODD, TOP, EVEN,   ODD]),
+    ([TOP, BOTTOM, ODD, TOP, BOTTOM, ODD], "e := f - 1", [TOP,      BOTTOM, ODD, TOP, EVEN,   ODD])
 ]
-
 
 #################### Summation Testing ####################
 
@@ -108,7 +106,7 @@ SUMMATION_TESTS = [
     ([SUMMATION_TOP,            SUMMATION_TOP,               BOTTOM],                    "assume(a = b)",   [SUMMATION_TOP,             SUMMATION_TOP,              BOTTOM]                 ), # good: vars are equal
     ([SUMMATION_TOP,            BOTTOM,                      SummationElement(-3, 5)],   "assume(a = b)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ), # bad: vars are not equal
     ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-3, -3),   SUMMATION_TOP,              SummationElement(-2, 5)]), # good: vars are not equal
-    ([SummationElement(-4, -3),  SUMMATION_TOP,               SummationElement(-2, 5)],   "assume(a != c)",  [SummationElement(-4, -3),   SUMMATION_TOP,              SummationElement(-2, 5)]), # good: vars are not equal
+    ([SummationElement(-4, -3),  SUMMATION_TOP,               SummationElement(-2, 5)],  "assume(a != c)",  [SummationElement(-4, -3),   SUMMATION_TOP,              SummationElement(-2, 5)]), # good: vars are not equal
     ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(a != c)",  [BOTTOM,                    BOTTOM,                     BOTTOM]                 ), # bad: vars are equal
     ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(TRUE)",    [SummationElement(-3, 5),   SUMMATION_TOP,              SummationElement(-3, 5)]),
     ([SummationElement(-3, 5),  SUMMATION_TOP,               SummationElement(-3, 5)],   "assume(FALSE)",   [BOTTOM,                    BOTTOM,                     BOTTOM]                 ),
@@ -126,7 +124,6 @@ SUMMATION_TESTS = [
     ([SummationElement(-math.inf, 1),        BOTTOM,                                 BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE ),
     ([BOTTOM,                                SummationElement(-math.inf, 1),         BOTTOM                 ], "assert (SUM a = SUM b)",        CANNOT_VALIDATE )
 ]
-
 
 #################### Combined Testing ####################
 
@@ -200,7 +197,6 @@ COMBINED_TESTS = [
         ]                  
     ),
 
-
     # Assumptions
     (
         [
@@ -269,7 +265,6 @@ COMBINED_TESTS = [
     ),
     
     # Assertions
-
     (
         [
             CombinedElement(ODD, SummationElement(3, 3)), 
@@ -386,6 +381,5 @@ COMBINED_TESTS = [
         ],
         "assert (ODD a EVEN c)",
         CANNOT_VALIDATE               
-    ),
-
+    )
 ]

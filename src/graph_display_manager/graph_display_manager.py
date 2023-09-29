@@ -130,7 +130,6 @@ class GraphDisplayManager():
         limy = limits[1]
         epsilons_y = epsilons[1]
         
-        # Plotting current statement and working list.
         plt.text(limx[0], 
                  limy[1] - epsilons_y, 
                  f"{snapshot.current_node_label}: [{snapshot.statement:6}]# {snapshot.join_vector}", 
@@ -142,7 +141,6 @@ class GraphDisplayManager():
                  f"Working List: {snapshot.working_list}", 
                  fontsize=8, 
                  color='blue')
-        # ============================================
         
         labels = dict()
         for node_label, node_pos in self.nodes_positions.items():
@@ -163,13 +161,10 @@ class GraphDisplayManager():
                 font_weight='bold',
                 arrows=True,
                 labels=labels)
-
-        #######################################################################
         
         plt.xlim(limx)  
         plt.ylim(limy) 
 
-        # Coloring the node in the current iteration.
         nx.draw_networkx_nodes(nx_graph, 
                                self.nodes_positions,
                                nodelist=[snapshot.current_node_label],
