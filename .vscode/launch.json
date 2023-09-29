@@ -50,8 +50,7 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": [ 
-                // "programs/combined_tests/class_test.txt",
-                // "programs/combined_tests/parity_fails.txt",
+
                 "programs/combined_tests/summation_fails.txt",
                 "c",
                 "-w",
@@ -68,11 +67,28 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": [ 
-                "programs/summation_tests/class_test.txt",
-                // "programs/summation_tests/simple_test.txt",
-                "s",
-                "-w",
-                "-n",
+                // "programs/summation_tests/class_test.txt", "s", "-p"
+                // "programs/summation_tests/class_test.txt", "s", "-p", "-w"
+                "programs/summation_tests/narrow_test.txt", "s", "-p", "-w", "-n"
+
+            ]
+        },
+        {
+            "name": "parity test",
+            "cwd": "${workspaceFolder}",
+            "type": "python",
+            "request": "launch",
+            "program": "paav.py",
+            "console": "externalTerminal",
+            "justMyCode": true,
+            "args": [ 
+                "programs/parity_tests/fast_double_loop.txt",
+                // "programs/parity_tests/simple_test.txt",
+                // "programs/parity_tests/TOP_limitation.txt",
+                // "programs/parity_tests/assertion_fails_intentionally.txt",
+                // "programs/parity_tests/infinite_loop_missed.txt",
+
+                "p",
                 "-p"
             ]
         }

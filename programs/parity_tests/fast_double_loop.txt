@@ -1,0 +1,11 @@
+a
+L0 a := 4 L1
+L1 assume(a = 50) L5
+L1 assume(a != 50) L2
+L2 assume(a = 50) L5
+L2 assume(a != 50) L3
+L3 a := a + 1 L4
+L4 assert (EVEN a) L1
+L5 assert (EVEN a) L6
+
+

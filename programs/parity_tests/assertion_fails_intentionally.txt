@@ -1,0 +1,9 @@
+i
+L0 i := 1 L1
+L1 assume(i = 17) L5
+L1 assume(i != 17) L2
+L2 i := i + 1 L3
+L3 i := i + 1 L4
+L4 assert (ODD i) L1
+L5 assert (EVEN i) L6
+

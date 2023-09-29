@@ -51,3 +51,28 @@ options:
 ```
     py .\paav.py .\programs\general_tests\simple_test.txt c -p
 ```
+
+### Running tests:
+
+- You could add -p for each test to plot the graph.
+
+**Parity:**
+
+```
+    py .\paav.py programs/parity_tests/infinite_loop_missed.txt p
+    py .\paav.py programs/parity_tests/simple_test.txt p
+    py .\paav.py programs/parity_tests/TOP_limitation.txt p
+    py .\paav.py programs/parity_tests/assertion_fails_intentionally.txt p
+    py .\paav.py programs/parity_tests/fast_double_loop.txt p
+```
+
+**Summation:**
+
+```
+    py .\paav.py programs/summation_tests/class_test.txt s
+    py .\paav.py programs/summation_tests/class_test.txt s -w
+    py .\paav.py programs/summation_tests/class_test.txt s -w -n
+
+
+
+```

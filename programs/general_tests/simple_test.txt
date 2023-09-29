@@ -1,0 +1,7 @@
+i j k
+L0 i := 1 L1
+L1 j := 1 L2
+L2 assert (SUM i = SUM j) L3
+L3 k := i + 1 L4
+L4 j := j + 1 L5
+L5 assert (SUM k = SUM j) L6

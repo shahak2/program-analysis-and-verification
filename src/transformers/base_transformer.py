@@ -190,6 +190,9 @@ class BaseTransformer():
             basic_expression = expression[0]
             return self.evaluate_basic_expression(basic_expression,
                                                   values_vector)
+        elif type(expression) == str and TU.is_number(expression):
+            return self.evaluate_basic_expression(expression,
+                                                  values_vector)
         
         expression_variable = expression[0]
         
