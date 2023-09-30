@@ -40,7 +40,8 @@ PARITY_TESTS = [
     # Assumptions
     ([TOP,  EVEN,   TOP],   "assume",          [TOP,    EVEN,   TOP   ]),
     ([EVEN, EVEN,   TOP],   "assume(i = n)",   [EVEN,   EVEN,   TOP   ]), # good: vars are equal
-    ([TOP,  EVEN,   TOP],   "assume(i = n)",   [BOTTOM, BOTTOM, BOTTOM]), # bad: vars are not equal
+    ([ODD,  EVEN,   TOP],   "assume(i = n)",   [BOTTOM, BOTTOM, BOTTOM]), # bad: vars are not equal
+    ([TOP,  EVEN,   TOP],   "assume(i = n)",   [EVEN,   EVEN,   TOP]),    # good
     ([EVEN, EVEN,   ODD],   "assume(i != j)",  [EVEN,   EVEN,   ODD   ]), # good: vars are not equal
     ([EVEN, EVEN,   EVEN],  "assume(i != j)",  [BOTTOM, BOTTOM, BOTTOM]), # bad: vars are equal
     ([TOP,  EVEN,   TOP],   "assume(TRUE)",    [TOP,    EVEN,   TOP   ]),

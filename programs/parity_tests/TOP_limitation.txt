@@ -1,8 +1,0 @@
-a b c
-L0 a := 2 L1
-L1 b := 79 L2
-L2 c := a L3
-L3 assume(c = b) L5
-L3 assume(c != b) L4
-L4 c := c + 1 L3
-L5 assert (EVEN b EVEN c) (ODD b ODD c) L6

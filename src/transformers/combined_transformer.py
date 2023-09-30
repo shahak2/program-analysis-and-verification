@@ -71,7 +71,6 @@ class CombinedTransformer():
                                     size):
         return [BOTTOM] * size
     
-
     def is_assertion_statement(self,
                                statement):
         return "assert" in statement

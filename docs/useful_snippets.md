@@ -61,7 +61,6 @@ options:
 ```
     py .\paav.py programs/parity_tests/infinite_loop_missed.txt p
     py .\paav.py programs/parity_tests/simple_test.txt p
-    py .\paav.py programs/parity_tests/TOP_limitation.txt p
     py .\paav.py programs/parity_tests/assertion_fails_intentionally.txt p
     py .\paav.py programs/parity_tests/fast_double_loop.txt p
 ```
@@ -72,7 +71,25 @@ options:
     py .\paav.py programs/summation_tests/class_test.txt s
     py .\paav.py programs/summation_tests/class_test.txt s -w
     py .\paav.py programs/summation_tests/class_test.txt s -w -n
+    py .\paav.py programs/summation_tests/simple_test.txt s
+```
 
 
+**Combined:**
 
 ```
+    py .\paav.py programs/combined_tests/parity_fails.txt c
+    py .\paav.py programs/combined_tests/summation_fails.txt c
+    py .\paav.py programs/combined_tests/successful_run.txt c
+
+
+    py .\paav.py programs/parity_tests/infinite_loop_missed.txt c -w
+    py .\paav.py programs/parity_tests/simple_test.txt c
+    py .\paav.py programs/parity_tests/assertion_fails_intentionally.txt c
+    py .\paav.py programs/parity_tests/fast_double_loop.txt c
+    py .\paav.py programs/summation_tests/class_test.txt c
+    py .\paav.py programs/summation_tests/class_test.txt c -w
+    py .\paav.py programs/summation_tests/class_test.txt c -w -n
+    py .\paav.py programs/summation_tests/simple_test.txt c
+```
+

@@ -149,29 +149,11 @@ class BaseTransformer():
             self.evaluate_expression_to_domain_element(right_var, 
                                                        values_vector)
         
-        return self.get_assume_results_by_operator(left_var_value, 
+        return self.get_assume_results_by_operator(left_var,
+                                                   left_var_value, 
                                                    right_var_value, 
                                                    operator,
                                                    values_vector)
-        
-    def get_assume_results_by_operator(self, 
-                                       left_var_value, 
-                                       right_var_value, 
-                                       operator,
-                                       values_vector):
-        
-        if left_var_value == right_var_value:
-            if operator == CONDITION_CONSTS.equal:
-                return values_vector
-            elif operator == CONDITION_CONSTS.not_equal:
-                return self.get_vector_of_bottom_values(
-                    len(values_vector))
-            
-        if operator == CONDITION_CONSTS.not_equal:
-                return values_vector
-        
-        return self.get_vector_of_bottom_values(
-            len(values_vector))
         
     def transform_simple_assume(self, 
                                 token, 
@@ -230,6 +212,15 @@ class BaseTransformer():
     ######################################################
     ########### Evaluation Methods to override ###########
     ######################################################
+    
+    def get_assume_results_by_operator(self, 
+                                       left_var,
+                                       left_var_value, 
+                                       right_var_value, 
+                                       operator,
+                                       values_vector):
+        raise NotImplementedError(
+            f"get_assume_results_by_operator function not implemented")
     
     def evaluate_unknown(self):
         raise NotImplementedError(

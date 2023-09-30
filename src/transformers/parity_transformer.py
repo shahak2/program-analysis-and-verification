@@ -65,8 +65,7 @@ class ParityTransformer(BaseTransformer):
                 return False
         
         return True
-    
-    
+
     def is_not_able_to_validate(variable_value):
         return variable_value == BOTTOM
     
@@ -88,3 +87,35 @@ class ParityTransformer(BaseTransformer):
             return variable_value == ODD
         
         return variable_value == EVEN
+    
+    def get_assume_results_by_operator(self, 
+                                       left_var,
+                                       left_var_value, 
+                                       right_var_value, 
+                                       operator,
+                                       values_vector):
+        
+        if operator == CONDITION_CONSTS.equal:
+                if left_var_value == right_var_value:
+                    return values_vector
+                if left_var_value == TOP and \
+                    (right_var_value == EVEN or right_var_value == ODD):
+                    left_var_index = \
+                        self.variable_to_index_mapping[left_var]
+                    
+                    new_values_vector = values_vector.copy()
+                    new_values_vector[left_var_index] = right_var_value
+                    return new_values_vector
+
+                return self.get_vector_of_bottom_values(
+                    len(values_vector))
+
+
+        # not equal operator
+        if left_var_value != right_var_value:
+            if operator == CONDITION_CONSTS.not_equal:
+                return values_vector
+
+        return self.get_vector_of_bottom_values(
+            len(values_vector))
+    

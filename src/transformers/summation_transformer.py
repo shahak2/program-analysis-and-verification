@@ -122,7 +122,6 @@ class SummationTransformer(BaseTransformer):
                                     perform (values_vector) MEET ([(-inf, inf),...,x_index: SummationElement(y.high+1, inf),...,y_index: SummationElement(-inf, x.low-1),...,(-inf, inf)])
         '''
         
-        
         if self.is_assume_split_node(statement):
             return values_vector
         
@@ -222,7 +221,6 @@ class SummationTransformer(BaseTransformer):
                 return self.domain_interface.vector_join(meet_vector1, 
                                                          meet_vector2)
                 
-        
     def evaluate_basic_expression(self, 
                                   basic_expression,
                                   values_vector):
@@ -238,22 +236,3 @@ class SummationTransformer(BaseTransformer):
         return self.evaluate_variable(basic_expression,
                                       values_vector)
         
-        
-    def get_assume_results_by_operator(self, 
-                                       left_var_value, 
-                                       right_var_value, 
-                                       operator,
-                                       values_vector):
-        
-        if left_var_value == right_var_value:
-            if operator == CONDITION_CONSTS.equal:
-                return values_vector
-            elif operator == CONDITION_CONSTS.not_equal:
-                return self.get_vector_of_bottom_values(
-                    len(values_vector))
-            
-        if operator == CONDITION_CONSTS.not_equal:
-                return values_vector
-        
-        return self.get_vector_of_bottom_values(
-            len(values_vector))

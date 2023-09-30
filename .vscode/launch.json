@@ -50,12 +50,9 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": [ 
-
-                "programs/combined_tests/summation_fails.txt",
-                "c",
-                "-w",
-                // "-n",
-                "-p"
+                // "programs/combined_tests/summation_fails.txt", "c", "-p", "-w"
+                // "programs/combined_tests/parity_fails.txt", "c", "-p"
+                "programs/combined_tests/successful_run.txt", "c", "-p", "-w"
             ]
         },
         {
@@ -70,8 +67,8 @@
                 // "programs/summation_tests/class_test.txt", "s", "-p"
                 // "programs/summation_tests/class_test.txt", "s", "-p", "-w"
                 // "programs/summation_tests/class_test.txt", "s", "-p", "-w", "-n" 
-                "programs/summation_tests/class_test.txt", "s", "-p", "-w", "-n" 
-
+                // "programs/summation_tests/simple_test.txt", "s", "-p"
+                "programs/combined_tests/successful_run.txt", "s", "-p"
             ]
         },
         {
@@ -83,12 +80,10 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": [ 
-                "programs/parity_tests/fast_double_loop.txt",
+                // "programs/parity_tests/fast_double_loop.txt",
                 // "programs/parity_tests/simple_test.txt",
-                // "programs/parity_tests/TOP_limitation.txt",
                 // "programs/parity_tests/assertion_fails_intentionally.txt",
-                // "programs/parity_tests/infinite_loop_missed.txt",
-
+                "programs/parity_tests/infinite_loop_missed.txt",
                 "p",
                 "-p"
             ]
